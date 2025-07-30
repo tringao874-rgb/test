@@ -151,7 +151,7 @@ export default function Index() {
                 <Button asChild>
                   <Link to="/user-management">
                     <UserPlus className="h-4 w-4 mr-2" />
-                    Thêm thành viên
+                    Add Member
                   </Link>
                 </Button>
               )}
