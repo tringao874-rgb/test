@@ -438,7 +438,7 @@ export default function Chat() {
                   <Input
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder={activeChat === 'group' ? 'Nhập tin nhắn cho nhóm...' : 'Nhập tin nhắn riêng...'}
+                    placeholder={activeChat === 'group' ? 'Type a message to the group...' : 'Type a private message...'}
                     className="flex-1"
                   />
                   <Button variant="outline" size="sm" type="button">
