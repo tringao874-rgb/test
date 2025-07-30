@@ -264,7 +264,7 @@ export default function Index() {
               <Button asChild variant="outline" className="w-full justify-start">
                 <Link to="/user-management">
                   <Users className="h-4 w-4 mr-2" />
-                  Xem tất cả thành viên
+                  View All Members
                 </Link>
               </Button>
               
