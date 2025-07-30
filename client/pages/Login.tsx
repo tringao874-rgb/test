@@ -89,13 +89,13 @@ export default function Login() {
                   required
                   value={formData.username}
                   onChange={handleChange}
-                  placeholder="Enter your username"
+                  placeholder="Nhập tên đăng nhập"
                   disabled={isSubmitting}
                 />
               </div>
-              
+
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Mật khẩu</Label>
                 <Input
                   id="password"
                   name="password"
@@ -103,7 +103,7 @@ export default function Login() {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Enter your password"
+                  placeholder="Nhập mật khẩu"
                   disabled={isSubmitting}
                 />
               </div>
