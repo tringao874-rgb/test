@@ -48,16 +48,13 @@ export function Layout({ children }: LayoutProps) {
   const isManager = user.role === 'manager';
   
   const navigation = [
-    { name: 'Dashboard', href: '/', icon: Home, description: 'Overview and stats' },
-    { name: 'Chat', href: '/chat', icon: MessageSquare, description: 'Team communication' },
-    { name: 'Projects', href: '/projects', icon: FolderOpen, description: 'Project management' },
-    { name: 'Tasks', href: '/tasks', icon: CheckSquare, description: 'Task assignments' },
-    { name: 'Members', href: '/members', icon: Users, description: 'Team members' },
+    { name: 'Bảng điều khiển', href: '/', icon: Home, description: 'Tổng quan và thống kê' },
+    { name: 'Trò chuyện', href: '/chat', icon: MessageSquare, description: 'Liên lạc nhóm' },
+    { name: 'Dự án', href: '/projects', icon: FolderOpen, description: 'Quản lý dự án' },
+    { name: 'Nhiệm vụ', href: '/tasks', icon: CheckSquare, description: 'Giao việc' },
     ...(isManager ? [
-      { name: 'User Management', href: '/user-management', icon: UserPlus, description: 'Manage users' },
-      { name: 'Analytics', href: '/analytics', icon: BarChart3, description: 'Activity charts' },
-      { name: 'Activity Log', href: '/activity', icon: Activity, description: 'System activity' },
-      { name: 'Settings', href: '/settings', icon: Settings, description: 'System settings' }
+      { name: 'Quản lý người dùng', href: '/user-management', icon: UserPlus, description: 'Quản lý người dùng' },
+      { name: 'Phân tích & Hoạt động', href: '/analytics', icon: BarChart3, description: 'Biểu đồ và nhật ký hoạt động' }
     ] : [])
   ];
 
