@@ -186,7 +186,7 @@ export function Layout({ children }: LayoutProps) {
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0">
               <SheetHeader className="sr-only">
-                <SheetTitle>Menu điều hướng</SheetTitle>
+                <SheetTitle>Navigation Menu</SheetTitle>
               </SheetHeader>
               <SidebarContent />
             </SheetContent>
