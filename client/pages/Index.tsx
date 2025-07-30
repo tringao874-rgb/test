@@ -254,7 +254,7 @@ export default function Index() {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Calendar className="h-5 w-5 mr-2" />
-                Hành động nhanh
+                Quick Actions
               </CardTitle>
               <CardDescription>
                 Các tác vụ thông thường bạn có thể th��c hiện
