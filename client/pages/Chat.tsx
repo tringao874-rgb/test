@@ -184,11 +184,11 @@ export default function Chat() {
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
     
     if (diffInMinutes < 60) {
-      return `${diffInMinutes} phút trước`;
+      return `${diffInMinutes}m ago`;
     } else if (diffInMinutes < 1440) {
-      return `${Math.floor(diffInMinutes / 60)} giờ trước`;
+      return `${Math.floor(diffInMinutes / 60)}h ago`;
     } else {
-      return `${Math.floor(diffInMinutes / 1440)} ngày trước`;
+      return `${Math.floor(diffInMinutes / 1440)}d ago`;
     }
   };
 
