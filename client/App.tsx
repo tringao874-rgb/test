@@ -13,10 +13,8 @@ import Login from "./pages/Login";
 import Chat from "./pages/Chat";
 import Projects from "./pages/Projects";
 import Tasks from "./pages/Tasks";
-import Members from "./pages/Members";
 import AddMember from "./pages/AddMember";
 import Activity from "./pages/Activity";
-import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
