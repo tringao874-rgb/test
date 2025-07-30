@@ -149,9 +149,9 @@ export default function Index() {
               </Badge>
               {isManager && (
                 <Button asChild>
-                  <Link to="/add-member">
+                  <Link to="/user-management">
                     <UserPlus className="h-4 w-4 mr-2" />
-                    Add Member
+                    Thêm thành viên
                   </Link>
                 </Button>
               )}
