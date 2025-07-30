@@ -10,6 +10,9 @@ import { AuthProvider } from "@/lib/auth-context";
 
 import Index from "./pages/Index";
 import Login from "./pages/Login";
+import Chat from "./pages/Chat";
+import Projects from "./pages/Projects";
+import Tasks from "./pages/Tasks";
 import Members from "./pages/Members";
 import AddMember from "./pages/AddMember";
 import Activity from "./pages/Activity";
@@ -28,8 +31,13 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/tasks" element={<Tasks />} />
             <Route path="/members" element={<Members />} />
             <Route path="/add-member" element={<AddMember />} />
+            <Route path="/user-management" element={<AddMember />} />
+            <Route path="/analytics" element={<Activity />} />
             <Route path="/activity" element={<Activity />} />
             <Route path="/settings" element={<Settings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
