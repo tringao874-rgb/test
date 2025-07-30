@@ -32,12 +32,8 @@ const App = () => (
             <Route path="/chat" element={<Chat />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/tasks" element={<Tasks />} />
-            <Route path="/members" element={<Members />} />
-            <Route path="/add-member" element={<AddMember />} />
             <Route path="/user-management" element={<AddMember />} />
             <Route path="/analytics" element={<Activity />} />
-            <Route path="/activity" element={<Activity />} />
-            <Route path="/settings" element={<Settings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
