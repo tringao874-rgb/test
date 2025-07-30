@@ -220,10 +220,10 @@ export default function Index() {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Activity className="h-5 w-5 mr-2" />
-                Recent Activity
+                Hoạt động gần đây
               </CardTitle>
               <CardDescription>
-                Latest actions from group members
+                Hành động mới nhất từ các thành viên nhóm
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
