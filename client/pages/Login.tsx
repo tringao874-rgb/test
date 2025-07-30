@@ -40,7 +40,7 @@ export default function Login() {
         setError(result.message || 'Đăng nhập thất bại');
       }
     } catch (err) {
-      setError('An unexpected error occurred');
+      setError('Đã xảy ra lỗi không mong muốn');
     }
     setIsSubmitting(false);
   };
