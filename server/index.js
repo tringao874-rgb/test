@@ -3,7 +3,11 @@ const express = require("express");
 const cors = require("cors");
 const { handleDemo } = require("./routes/demo");
 const { handleLogin, handleAuthCheck } = require("./routes/auth");
-const { handleGetStats, handleGetRecentActivity, handleGetFullActivity } = require("./routes/stats");
+const {
+  handleGetStats,
+  handleGetRecentActivity,
+  handleGetFullActivity,
+} = require("./routes/stats");
 const { initializeDatabase } = require("./db/config");
 
 function createServer() {

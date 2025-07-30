@@ -1,23 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-type Theme = 'dark' | 'light' | 'system';
+type Theme = "dark" | "light" | "system";
 
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(() => {
-    const stored = localStorage.getItem('theme') as Theme;
-    return stored || 'system';
+    const stored = localStorage.getItem("theme") as Theme;
+    return stored || "system";
   });
 
   useEffect(() => {
     const root = window.document.documentElement;
 
-    root.classList.remove('light', 'dark');
+    root.classList.remove("light", "dark");
 
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
+    if (theme === "system") {
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
         .matches
-        ? 'dark'
-        : 'light';
+        ? "dark"
+        : "light";
 
       root.classList.add(systemTheme);
       return;
@@ -27,7 +27,7 @@ export function useTheme() {
   }, [theme]);
 
   const updateTheme = (newTheme: Theme) => {
-    localStorage.setItem('theme', newTheme);
+    localStorage.setItem("theme", newTheme);
     setTheme(newTheme);
   };
 

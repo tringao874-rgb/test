@@ -1,34 +1,40 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/lib/auth-context';
-import { Layout } from '@/components/Layout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
+import { useState, useEffect } from "react";
+import { useAuth } from "@/lib/auth-context";
+import { Layout } from "@/components/Layout";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { 
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { 
-  UserPlus, 
-  Search, 
-  Settings, 
-  Shield, 
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import {
+  UserPlus,
+  Search,
+  Settings,
+  Shield,
   User,
   Mail,
   Calendar,
@@ -36,24 +42,24 @@ import {
   Edit,
   Trash2,
   UserX,
-  UserCheck
-} from 'lucide-react';
-import { Navigate } from 'react-router-dom';
+  UserCheck,
+} from "lucide-react";
+import { Navigate } from "react-router-dom";
 
 export default function AddMember() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const [users, setUsers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [roleFilter, setRoleFilter] = useState('all');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [roleFilter, setRoleFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [newUser, setNewUser] = useState({
-    username: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    role: 'member',
-    password: '',
-    confirmPassword: ''
+    username: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+    role: "member",
+    password: "",
+    confirmPassword: "",
   });
   const [editingUser, setEditingUser] = useState(null);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -62,60 +68,60 @@ export default function AddMember() {
   // Mock user data
   const mockUsers = [
     {
-      id: '1',
-      username: 'admin',
-      email: 'admin@groupmanager.com',
-      firstName: 'Admin',
-      lastName: 'User',
-      role: 'manager',
+      id: "1",
+      username: "admin",
+      email: "admin@groupmanager.com",
+      firstName: "Admin",
+      lastName: "User",
+      role: "manager",
       isActive: true,
-      createdAt: '2024-01-01T00:00:00Z',
-      lastLogin: '2024-01-30T10:30:00Z'
+      createdAt: "2024-01-01T00:00:00Z",
+      lastLogin: "2024-01-30T10:30:00Z",
     },
     {
-      id: '2',
-      username: 'jane.smith',
-      email: 'jane.smith@groupmanager.com',
-      firstName: 'Jane',
-      lastName: 'Smith',
-      role: 'member',
+      id: "2",
+      username: "jane.smith",
+      email: "jane.smith@groupmanager.com",
+      firstName: "Jane",
+      lastName: "Smith",
+      role: "member",
       isActive: true,
-      createdAt: '2024-01-05T00:00:00Z',
-      lastLogin: '2024-01-30T09:15:00Z'
+      createdAt: "2024-01-05T00:00:00Z",
+      lastLogin: "2024-01-30T09:15:00Z",
     },
     {
-      id: '3',
-      username: 'bob.wilson',
-      email: 'bob.wilson@groupmanager.com',
-      firstName: 'Bob',
-      lastName: 'Wilson',
-      role: 'member',
+      id: "3",
+      username: "bob.wilson",
+      email: "bob.wilson@groupmanager.com",
+      firstName: "Bob",
+      lastName: "Wilson",
+      role: "member",
       isActive: true,
-      createdAt: '2024-01-10T00:00:00Z',
-      lastLogin: '2024-01-29T16:45:00Z'
+      createdAt: "2024-01-10T00:00:00Z",
+      lastLogin: "2024-01-29T16:45:00Z",
     },
     {
-      id: '4',
-      username: 'sarah.johnson',
-      email: 'sarah.johnson@groupmanager.com',
-      firstName: 'Sarah',
-      lastName: 'Johnson',
-      role: 'member',
+      id: "4",
+      username: "sarah.johnson",
+      email: "sarah.johnson@groupmanager.com",
+      firstName: "Sarah",
+      lastName: "Johnson",
+      role: "member",
       isActive: false,
-      createdAt: '2024-01-15T00:00:00Z',
-      lastLogin: '2024-01-25T14:20:00Z'
+      createdAt: "2024-01-15T00:00:00Z",
+      lastLogin: "2024-01-25T14:20:00Z",
     },
     {
-      id: '5',
-      username: 'mike.davis',
-      email: 'mike.davis@groupmanager.com',
-      firstName: 'Mike',
-      lastName: 'Davis',
-      role: 'member',
+      id: "5",
+      username: "mike.davis",
+      email: "mike.davis@groupmanager.com",
+      firstName: "Mike",
+      lastName: "Davis",
+      role: "member",
       isActive: true,
-      createdAt: '2024-01-20T00:00:00Z',
-      lastLogin: '2024-01-30T11:00:00Z'
-    }
+      createdAt: "2024-01-20T00:00:00Z",
+      lastLogin: "2024-01-30T11:00:00Z",
+    },
   ];
 
   useEffect(() => {
@@ -139,7 +145,7 @@ export default function AddMember() {
     return <Navigate to="/login" replace />;
   }
 
-  const isManager = user?.role === 'manager';
+  const isManager = user?.role === "manager";
 
   if (!isManager) {
     return (
@@ -159,22 +165,29 @@ export default function AddMember() {
     );
   }
 
-  const filteredUsers = users.filter(u => {
-    const matchesSearch = u.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         u.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         u.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         u.username.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = roleFilter === 'all' || u.role === roleFilter;
-    const matchesStatus = statusFilter === 'all' || 
-                         (statusFilter === 'active' && u.isActive) ||
-                         (statusFilter === 'inactive' && !u.isActive);
-    
+  const filteredUsers = users.filter((u) => {
+    const matchesSearch =
+      u.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      u.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      u.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      u.username.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesRole = roleFilter === "all" || u.role === roleFilter;
+    const matchesStatus =
+      statusFilter === "all" ||
+      (statusFilter === "active" && u.isActive) ||
+      (statusFilter === "inactive" && !u.isActive);
+
     return matchesSearch && matchesRole && matchesStatus;
   });
 
   const handleCreateUser = (e) => {
     e.preventDefault();
-    if (!newUser.username.trim() || !newUser.email.trim() || newUser.password !== newUser.confirmPassword) return;
+    if (
+      !newUser.username.trim() ||
+      !newUser.email.trim() ||
+      newUser.password !== newUser.confirmPassword
+    )
+      return;
 
     const user = {
       id: Date.now().toString(),
@@ -185,18 +198,18 @@ export default function AddMember() {
       role: newUser.role,
       isActive: true,
       createdAt: new Date().toISOString(),
-      lastLogin: null
+      lastLogin: null,
     };
 
-    setUsers(prev => [user, ...prev]);
+    setUsers((prev) => [user, ...prev]);
     setNewUser({
-      username: '',
-      email: '',
-      firstName: '',
-      lastName: '',
-      role: 'member',
-      password: '',
-      confirmPassword: ''
+      username: "",
+      email: "",
+      firstName: "",
+      lastName: "",
+      role: "member",
+      password: "",
+      confirmPassword: "",
     });
     setIsCreateDialogOpen(false);
   };
@@ -205,27 +218,27 @@ export default function AddMember() {
     e.preventDefault();
     if (!editingUser) return;
 
-    setUsers(prev => prev.map(u => 
-      u.id === editingUser.id ? { ...u, ...editingUser } : u
-    ));
+    setUsers((prev) =>
+      prev.map((u) => (u.id === editingUser.id ? { ...u, ...editingUser } : u)),
+    );
     setEditingUser(null);
     setIsEditDialogOpen(false);
   };
 
   const handleToggleStatus = (userId, isActive) => {
-    setUsers(prev => prev.map(u => 
-      u.id === userId ? { ...u, isActive } : u
-    ));
+    setUsers((prev) =>
+      prev.map((u) => (u.id === userId ? { ...u, isActive } : u)),
+    );
   };
 
   const handleDeleteUser = (userId) => {
-    if (confirm('Bạn có chắc chắn muốn xóa người d��ng này?')) {
-      setUsers(prev => prev.filter(u => u.id !== userId));
+    if (confirm("Bạn có chắc chắn muốn xóa người d��ng này?")) {
+      setUsers((prev) => prev.filter((u) => u.id !== userId));
     }
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return 'Chưa bao giờ';
+    if (!dateString) return "Chưa bao giờ";
     return new Date(dateString).toLocaleString();
   };
 
@@ -235,10 +248,10 @@ export default function AddMember() {
 
   const userStats = {
     total: users.length,
-    active: users.filter(u => u.isActive).length,
-    inactive: users.filter(u => !u.isActive).length,
-    managers: users.filter(u => u.role === 'manager').length,
-    members: users.filter(u => u.role === 'member').length
+    active: users.filter((u) => u.isActive).length,
+    inactive: users.filter((u) => !u.isActive).length,
+    managers: users.filter((u) => u.role === "manager").length,
+    members: users.filter((u) => u.role === "member").length,
   };
 
   return (
@@ -254,7 +267,10 @@ export default function AddMember() {
               Quản lý thành viên nhóm và cấp độ truy cập của họ
             </p>
           </div>
-          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+          <Dialog
+            open={isCreateDialogOpen}
+            onOpenChange={setIsCreateDialogOpen}
+          >
             <DialogTrigger asChild>
               <Button>
                 <UserPlus className="h-4 w-4 mr-2" />
@@ -275,7 +291,12 @@ export default function AddMember() {
                     <Input
                       id="firstName"
                       value={newUser.firstName}
-                      onChange={(e) => setNewUser(prev => ({ ...prev, firstName: e.target.value }))}
+                      onChange={(e) =>
+                        setNewUser((prev) => ({
+                          ...prev,
+                          firstName: e.target.value,
+                        }))
+                      }
                       placeholder="Enter first name"
                       required
                     />
@@ -285,20 +306,30 @@ export default function AddMember() {
                     <Input
                       id="lastName"
                       value={newUser.lastName}
-                      onChange={(e) => setNewUser(prev => ({ ...prev, lastName: e.target.value }))}
+                      onChange={(e) =>
+                        setNewUser((prev) => ({
+                          ...prev,
+                          lastName: e.target.value,
+                        }))
+                      }
                       placeholder="Enter last name"
                       required
                     />
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="username">Username</Label>
                     <Input
                       id="username"
                       value={newUser.username}
-                      onChange={(e) => setNewUser(prev => ({ ...prev, username: e.target.value }))}
+                      onChange={(e) =>
+                        setNewUser((prev) => ({
+                          ...prev,
+                          username: e.target.value,
+                        }))
+                      }
                       placeholder="Enter username"
                       required
                     />
@@ -309,7 +340,12 @@ export default function AddMember() {
                       id="email"
                       type="email"
                       value={newUser.email}
-                      onChange={(e) => setNewUser(prev => ({ ...prev, email: e.target.value }))}
+                      onChange={(e) =>
+                        setNewUser((prev) => ({
+                          ...prev,
+                          email: e.target.value,
+                        }))
+                      }
                       placeholder="Enter email address"
                       required
                     />
@@ -318,7 +354,12 @@ export default function AddMember() {
 
                 <div className="space-y-2">
                   <Label htmlFor="role">Role</Label>
-                  <Select value={newUser.role} onValueChange={(value) => setNewUser(prev => ({ ...prev, role: value }))}>
+                  <Select
+                    value={newUser.role}
+                    onValueChange={(value) =>
+                      setNewUser((prev) => ({ ...prev, role: value }))
+                    }
+                  >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -336,7 +377,12 @@ export default function AddMember() {
                       id="password"
                       type="password"
                       value={newUser.password}
-                      onChange={(e) => setNewUser(prev => ({ ...prev, password: e.target.value }))}
+                      onChange={(e) =>
+                        setNewUser((prev) => ({
+                          ...prev,
+                          password: e.target.value,
+                        }))
+                      }
                       placeholder="Enter password"
                       required
                     />
@@ -347,7 +393,12 @@ export default function AddMember() {
                       id="confirmPassword"
                       type="password"
                       value={newUser.confirmPassword}
-                      onChange={(e) => setNewUser(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                      onChange={(e) =>
+                        setNewUser((prev) => ({
+                          ...prev,
+                          confirmPassword: e.target.value,
+                        }))
+                      }
                       placeholder="Confirm password"
                       required
                     />
@@ -355,10 +406,17 @@ export default function AddMember() {
                 </div>
 
                 <div className="flex justify-end space-x-2">
-                  <Button type="button" variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsCreateDialogOpen(false)}
+                  >
                     Cancel
                   </Button>
-                  <Button type="submit" disabled={newUser.password !== newUser.confirmPassword}>
+                  <Button
+                    type="submit"
+                    disabled={newUser.password !== newUser.confirmPassword}
+                  >
                     Create User
                   </Button>
                 </div>
@@ -373,8 +431,12 @@ export default function AddMember() {
             <CardContent className="flex items-center p-6">
               <User className="h-8 w-8 text-blue-600 mr-4" />
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Users</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{userStats.total}</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  Total Users
+                </p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {userStats.total}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -382,8 +444,12 @@ export default function AddMember() {
             <CardContent className="flex items-center p-6">
               <UserCheck className="h-8 w-8 text-green-600 mr-4" />
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{userStats.active}</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  Active
+                </p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {userStats.active}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -391,8 +457,12 @@ export default function AddMember() {
             <CardContent className="flex items-center p-6">
               <UserX className="h-8 w-8 text-red-600 mr-4" />
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Inactive</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{userStats.inactive}</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  Inactive
+                </p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {userStats.inactive}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -400,8 +470,12 @@ export default function AddMember() {
             <CardContent className="flex items-center p-6">
               <Shield className="h-8 w-8 text-purple-600 mr-4" />
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Managers</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{userStats.managers}</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  Managers
+                </p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {userStats.managers}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -409,8 +483,12 @@ export default function AddMember() {
             <CardContent className="flex items-center p-6">
               <User className="h-8 w-8 text-gray-600 mr-4" />
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Members</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{userStats.members}</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  Members
+                </p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {userStats.members}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -464,7 +542,10 @@ export default function AddMember() {
           <CardContent>
             <div className="space-y-4">
               {filteredUsers.map((u) => (
-                <div key={u.id} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                <div
+                  key={u.id}
+                  className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
+                >
                   <div className="flex items-center space-x-4">
                     <Avatar className="h-10 w-10">
                       <AvatarFallback>
@@ -480,36 +561,44 @@ export default function AddMember() {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-6">
                     <div className="text-center">
-                      <Badge variant={u.role === 'manager' ? 'default' : 'secondary'}>
+                      <Badge
+                        variant={u.role === "manager" ? "default" : "secondary"}
+                      >
                         <Shield className="h-3 w-3 mr-1" />
                         {u.role}
                       </Badge>
                     </div>
-                    
+
                     <div className="text-center">
-                      <Badge variant={u.isActive ? 'default' : 'destructive'}>
-                        {u.isActive ? <UserCheck className="h-3 w-3 mr-1" /> : <UserX className="h-3 w-3 mr-1" />}
-                        {u.isActive ? 'Active' : 'Inactive'}
+                      <Badge variant={u.isActive ? "default" : "destructive"}>
+                        {u.isActive ? (
+                          <UserCheck className="h-3 w-3 mr-1" />
+                        ) : (
+                          <UserX className="h-3 w-3 mr-1" />
+                        )}
+                        {u.isActive ? "Active" : "Inactive"}
                       </Badge>
                     </div>
-                    
+
                     <div className="text-sm text-gray-500 dark:text-gray-400 text-center min-w-[100px]">
                       <p>Last login</p>
                       <p>{formatDate(u.lastLogin)}</p>
                     </div>
-                    
+
                     <div className="flex items-center space-x-2">
                       <Switch
                         checked={u.isActive}
-                        onCheckedChange={(checked) => handleToggleStatus(u.id, checked)}
+                        onCheckedChange={(checked) =>
+                          handleToggleStatus(u.id, checked)
+                        }
                         disabled={u.id === user.id} // Can't disable yourself
                       />
-                      
-                      <Button 
-                        variant="outline" 
+
+                      <Button
+                        variant="outline"
                         size="sm"
                         onClick={() => {
                           setEditingUser(u);
@@ -518,9 +607,9 @@ export default function AddMember() {
                       >
                         <Edit className="h-4 w-4" />
                       </Button>
-                      
-                      <Button 
-                        variant="outline" 
+
+                      <Button
+                        variant="outline"
                         size="sm"
                         onClick={() => handleDeleteUser(u.id)}
                         disabled={u.id === user.id} // Can't delete yourself
@@ -552,7 +641,12 @@ export default function AddMember() {
                     <Input
                       id="editFirstName"
                       value={editingUser.firstName}
-                      onChange={(e) => setEditingUser(prev => ({ ...prev, firstName: e.target.value }))}
+                      onChange={(e) =>
+                        setEditingUser((prev) => ({
+                          ...prev,
+                          firstName: e.target.value,
+                        }))
+                      }
                       required
                     />
                   </div>
@@ -561,28 +655,40 @@ export default function AddMember() {
                     <Input
                       id="editLastName"
                       value={editingUser.lastName}
-                      onChange={(e) => setEditingUser(prev => ({ ...prev, lastName: e.target.value }))}
+                      onChange={(e) =>
+                        setEditingUser((prev) => ({
+                          ...prev,
+                          lastName: e.target.value,
+                        }))
+                      }
                       required
                     />
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="editEmail">Email</Label>
                   <Input
                     id="editEmail"
                     type="email"
                     value={editingUser.email}
-                    onChange={(e) => setEditingUser(prev => ({ ...prev, email: e.target.value }))}
+                    onChange={(e) =>
+                      setEditingUser((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
                     required
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="editRole">Role</Label>
-                  <Select 
-                    value={editingUser.role} 
-                    onValueChange={(value) => setEditingUser(prev => ({ ...prev, role: value }))}
+                  <Select
+                    value={editingUser.role}
+                    onValueChange={(value) =>
+                      setEditingUser((prev) => ({ ...prev, role: value }))
+                    }
                     disabled={editingUser.id === user.id} // Can't change your own role
                   >
                     <SelectTrigger>
@@ -596,12 +702,14 @@ export default function AddMember() {
                 </div>
 
                 <div className="flex justify-end space-x-2">
-                  <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsEditDialogOpen(false)}
+                  >
                     Cancel
                   </Button>
-                  <Button type="submit">
-                    Update User
-                  </Button>
+                  <Button type="submit">Update User</Button>
                 </div>
               </form>
             )}
@@ -616,7 +724,9 @@ export default function AddMember() {
                 No users found
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                {searchTerm ? 'Try adjusting your search criteria' : 'Get started by adding your first team member'}
+                {searchTerm
+                  ? "Try adjusting your search criteria"
+                  : "Get started by adding your first team member"}
               </p>
               {!searchTerm && (
                 <Button onClick={() => setIsCreateDialogOpen(true)}>

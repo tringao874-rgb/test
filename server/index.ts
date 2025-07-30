@@ -3,7 +3,11 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleLogin, handleAuthCheck } from "./routes/auth";
-import { handleGetStats, handleGetRecentActivity, handleGetFullActivity } from "./routes/stats";
+import {
+  handleGetStats,
+  handleGetRecentActivity,
+  handleGetFullActivity,
+} from "./routes/stats";
 import { initializeDatabase } from "./db/config";
 
 export function createServer() {

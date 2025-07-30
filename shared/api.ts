@@ -14,7 +14,7 @@ export interface DemoResponse {
 /**
  * User role types
  */
-export type UserRole = 'manager' | 'member';
+export type UserRole = "manager" | "member";
 
 /**
  * User interface
@@ -58,7 +58,7 @@ export interface GroupMember {
   id: string;
   user: User;
   joinedAt: string;
-  status: 'active' | 'inactive' | 'pending';
+  status: "active" | "inactive" | "pending";
 }
 
 export interface GroupStats {

@@ -1,10 +1,16 @@
-import { ReactNode, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '@/lib/auth-context';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { ReactNode, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "@/lib/auth-context";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,14 +18,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { ThemeToggle } from '@/components/theme-toggle';
-import { 
-  Users, 
-  UserPlus, 
-  Activity, 
-  Settings, 
-  LogOut, 
+} from "@/components/ui/dropdown-menu";
+import { ThemeToggle } from "@/components/theme-toggle";
+import {
+  Users,
+  UserPlus,
+  Activity,
+  Settings,
+  LogOut,
   Shield,
   Home,
   Menu,
@@ -28,8 +34,8 @@ import {
   CheckSquare,
   ChevronLeft,
   ChevronRight,
-  BarChart3
-} from 'lucide-react';
+  BarChart3,
+} from "lucide-react";
 
 interface LayoutProps {
   children: ReactNode;
@@ -45,17 +51,49 @@ export function Layout({ children }: LayoutProps) {
     return <>{children}</>;
   }
 
-  const isManager = user.role === 'manager';
-  
+  const isManager = user.role === "manager";
+
   const navigation = [
-    { name: 'Dashboard', href: '/', icon: Home, description: 'Overview and stats' },
-    { name: 'Chat', href: '/chat', icon: MessageSquare, description: 'Team communication' },
-    { name: 'Projects', href: '/projects', icon: FolderOpen, description: 'Project management' },
-    { name: 'Tasks', href: '/tasks', icon: CheckSquare, description: 'Task assignments' },
-    ...(isManager ? [
-      { name: 'User Management', href: '/user-management', icon: UserPlus, description: 'Manage users' },
-      { name: 'Analytics & Activity', href: '/analytics', icon: BarChart3, description: 'Charts and activity logs' }
-    ] : [])
+    {
+      name: "Dashboard",
+      href: "/",
+      icon: Home,
+      description: "Overview and stats",
+    },
+    {
+      name: "Chat",
+      href: "/chat",
+      icon: MessageSquare,
+      description: "Team communication",
+    },
+    {
+      name: "Projects",
+      href: "/projects",
+      icon: FolderOpen,
+      description: "Project management",
+    },
+    {
+      name: "Tasks",
+      href: "/tasks",
+      icon: CheckSquare,
+      description: "Task assignments",
+    },
+    ...(isManager
+      ? [
+          {
+            name: "User Management",
+            href: "/user-management",
+            icon: UserPlus,
+            description: "Manage users",
+          },
+          {
+            name: "Analytics & Activity",
+            href: "/analytics",
+            icon: BarChart3,
+            description: "Charts and activity logs",
+          },
+        ]
+      : []),
   ];
 
   const getInitials = (firstName, lastName) => {
@@ -101,12 +139,14 @@ export function Layout({ children }: LayoutProps) {
               onClick={() => setMobileMenuOpen(false)}
               className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors group ${
                 isActive
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                  ? "bg-primary text-primary-foreground"
+                  : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               }`}
-              title={sidebarCollapsed ? item.description : ''}
+              title={sidebarCollapsed ? item.description : ""}
             >
-              <item.icon className={`h-5 w-5 ${sidebarCollapsed ? '' : 'mr-3'}`} />
+              <item.icon
+                className={`h-5 w-5 ${sidebarCollapsed ? "" : "mr-3"}`}
+              />
               {!sidebarCollapsed && (
                 <div className="flex-1">
                   <div>{item.name}</div>
@@ -122,7 +162,10 @@ export function Layout({ children }: LayoutProps) {
       <div className="p-4 border-t border-gray-200 dark:border-gray-700">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className={`w-full justify-start h-auto p-2 ${sidebarCollapsed ? 'px-2' : 'px-3'}`}>
+            <Button
+              variant="ghost"
+              className={`w-full justify-start h-auto p-2 ${sidebarCollapsed ? "px-2" : "px-3"}`}
+            >
               <Avatar className="h-8 w-8">
                 <AvatarFallback className="bg-primary text-primary-foreground">
                   {getInitials(user.firstName, user.lastName)}
@@ -136,7 +179,10 @@ export function Layout({ children }: LayoutProps) {
                   <p className="text-xs leading-none text-muted-foreground mt-1">
                     {user.email}
                   </p>
-                  <Badge variant={isManager ? "default" : "secondary"} className="text-xs mt-1">
+                  <Badge
+                    variant={isManager ? "default" : "secondary"}
+                    className="text-xs mt-1"
+                  >
                     <Shield className="h-3 w-3 mr-1" />
                     {user.role}
                   </Badge>
@@ -156,7 +202,10 @@ export function Layout({ children }: LayoutProps) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={logout} className="text-red-600 dark:text-red-400">
+            <DropdownMenuItem
+              onClick={logout}
+              className="text-red-600 dark:text-red-400"
+            >
               <LogOut className="mr-2 h-4 w-4" />
               <span>Log out</span>
             </DropdownMenuItem>
@@ -169,9 +218,11 @@ export function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
       {/* Desktop Sidebar */}
-      <div className={`hidden lg:fixed lg:inset-y-0 lg:flex lg:flex-col transition-all duration-300 ${
-        sidebarCollapsed ? 'lg:w-16' : 'lg:w-64'
-      } bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-sm z-40`}>
+      <div
+        className={`hidden lg:fixed lg:inset-y-0 lg:flex lg:flex-col transition-all duration-300 ${
+          sidebarCollapsed ? "lg:w-16" : "lg:w-64"
+        } bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-sm z-40`}
+      >
         <SidebarContent />
       </div>
 
@@ -206,9 +257,11 @@ export function Layout({ children }: LayoutProps) {
       </div>
 
       {/* Main Content */}
-      <main className={`transition-all duration-300 ${
-        sidebarCollapsed ? 'lg:pl-16' : 'lg:pl-64'
-      }`}>
+      <main
+        className={`transition-all duration-300 ${
+          sidebarCollapsed ? "lg:pl-16" : "lg:pl-64"
+        }`}
+      >
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           {children}
         </div>

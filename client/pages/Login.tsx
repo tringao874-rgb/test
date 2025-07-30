@@ -1,20 +1,26 @@
-import { useState } from 'react';
-import { useAuth } from '@/lib/auth-context';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Shield, Users } from 'lucide-react';
-import { Navigate } from 'react-router-dom';
+import { useState } from "react";
+import { useAuth } from "@/lib/auth-context";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Loader2, Shield, Users } from "lucide-react";
+import { Navigate } from "react-router-dom";
 
 export default function Login() {
   const { login, isAuthenticated, isLoading } = useAuth();
   const [formData, setFormData] = useState({
-    username: '',
-    password: ''
+    username: "",
+    password: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (isLoading) {
@@ -31,24 +37,24 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setIsSubmitting(true);
 
     try {
       const result = await login(formData);
       if (!result.success) {
-        setError(result.message || 'Đăng nhập thất bại');
+        setError(result.message || "Đăng nhập thất bại");
       }
     } catch (err) {
-      setError('Đã xảy ra lỗi không mong muốn');
+      setError("Đã xảy ra lỗi không mong muốn");
     }
     setIsSubmitting(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -61,13 +67,19 @@ export default function Login() {
               <Users className="h-8 w-8 text-primary-foreground" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">GroupManager</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">Đăng nhập vào tài khoản của bạn</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            GroupManager
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">
+            Đăng nhập vào tài khoản của bạn
+          </p>
         </div>
 
         <Card>
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">Chào mừng trở lại</CardTitle>
+            <CardTitle className="text-2xl text-center">
+              Chào mừng trở lại
+            </CardTitle>
             <CardDescription className="text-center">
               Nhập thông tin đ��ng nhập để truy cập hệ thống quản lý nhóm
             </CardDescription>
@@ -108,11 +120,7 @@ export default function Login() {
                 />
               </div>
 
-              <Button 
-                type="submit" 
-                className="w-full" 
-                disabled={isSubmitting}
-              >
+              <Button type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -129,8 +137,12 @@ export default function Login() {
 
             <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
               <p>Tài khoản demo:</p>
-              <p><strong>Quản lý:</strong> admin / admin123</p>
-              <p><strong>Thành viên:</strong> user / user123</p>
+              <p>
+                <strong>Quản lý:</strong> admin / admin123
+              </p>
+              <p>
+                <strong>Thành viên:</strong> user / user123
+              </p>
             </div>
           </CardContent>
         </Card>

@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { Layout } from "@/components/Layout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { 
-  Users, 
-  UserCheck, 
-  Shield, 
-  Activity, 
+import {
+  Users,
+  UserCheck,
+  Shield,
+  Activity,
   TrendingUp,
   Calendar,
   Clock,
-  UserPlus
+  UserPlus,
 } from "lucide-react";
 import { GroupStats, ActivityLog, ApiResponse } from "@shared/api";
 import { Navigate, Link } from "react-router-dom";
@@ -31,13 +37,13 @@ export default function Index() {
 
   const fetchDashboardData = async () => {
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem("auth_token");
       const headers = {
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       };
 
       // Fetch stats
-      const statsResponse = await fetch('/api/stats', { headers });
+      const statsResponse = await fetch("/api/stats", { headers });
       if (statsResponse.ok) {
         const statsData: ApiResponse<GroupStats> = await statsResponse.json();
         if (statsData.success && statsData.data) {
@@ -46,15 +52,16 @@ export default function Index() {
       }
 
       // Fetch recent activity
-      const activityResponse = await fetch('/api/activity/recent', { headers });
+      const activityResponse = await fetch("/api/activity/recent", { headers });
       if (activityResponse.ok) {
-        const activityData: ApiResponse<ActivityLog[]> = await activityResponse.json();
+        const activityData: ApiResponse<ActivityLog[]> =
+          await activityResponse.json();
         if (activityData.success && activityData.data) {
           setRecentActivity(activityData.data);
         }
       }
     } catch (error) {
-      console.error('Error fetching dashboard data:', error);
+      console.error("Error fetching dashboard data:", error);
     }
     setLoadingStats(false);
   };
@@ -74,51 +81,54 @@ export default function Index() {
     return <Navigate to="/login" replace />;
   }
 
-  const isManager = user?.role === 'manager';
-  
+  const isManager = user?.role === "manager";
+
   const defaultStats: GroupStats = {
     totalMembers: 12,
     activeMembers: 10,
     managersCount: 2,
-    membersCount: 10
+    membersCount: 10,
   };
 
   const currentStats = stats || defaultStats;
 
   const defaultActivity: ActivityLog[] = [
     {
-      id: '1',
-      userId: '1',
-      userName: 'John Doe',
-      action: 'User Login',
-      details: 'Logged in from 192.168.1.100',
-      timestamp: new Date(Date.now() - 5 * 60 * 1000).toISOString()
+      id: "1",
+      userId: "1",
+      userName: "John Doe",
+      action: "User Login",
+      details: "Logged in from 192.168.1.100",
+      timestamp: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
     },
     {
-      id: '2',
-      userId: '2',
-      userName: 'Jane Smith',
-      action: 'Member Added',
-      details: 'Added new member: Mike Johnson',
-      timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString()
+      id: "2",
+      userId: "2",
+      userName: "Jane Smith",
+      action: "Member Added",
+      details: "Added new member: Mike Johnson",
+      timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
     },
     {
-      id: '3',
-      userId: '3',
-      userName: 'Bob Wilson',
-      action: 'Profile Updated',
-      details: 'Updated contact information',
-      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
-    }
+      id: "3",
+      userId: "3",
+      userName: "Bob Wilson",
+      action: "Profile Updated",
+      details: "Updated contact information",
+      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+    },
   ];
 
-  const currentActivity = recentActivity.length > 0 ? recentActivity : defaultActivity;
+  const currentActivity =
+    recentActivity.length > 0 ? recentActivity : defaultActivity;
 
   const formatTimeAgo = (timestamp: string) => {
     const date = new Date(timestamp);
     const now = new Date();
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
-    
+    const diffInMinutes = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60),
+    );
+
     if (diffInMinutes < 60) {
       return `${diffInMinutes}m ago`;
     } else if (diffInMinutes < 1440) {
@@ -143,7 +153,10 @@ export default function Index() {
               </p>
             </div>
             <div className="flex items-center space-x-2">
-              <Badge variant={isManager ? "default" : "secondary"} className="text-sm">
+              <Badge
+                variant={isManager ? "default" : "secondary"}
+                className="text-sm"
+              >
                 <Shield className="h-3 w-3 mr-1" />
                 {user?.role}
               </Badge>
@@ -163,11 +176,15 @@ export default function Index() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Members</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Members
+              </CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{currentStats.totalMembers}</div>
+              <div className="text-2xl font-bold">
+                {currentStats.totalMembers}
+              </div>
               <p className="text-xs text-muted-foreground">
                 Active group members
               </p>
@@ -176,11 +193,15 @@ export default function Index() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Today</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Active Today
+              </CardTitle>
               <UserCheck className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{currentStats.activeMembers}</div>
+              <div className="text-2xl font-bold">
+                {currentStats.activeMembers}
+              </div>
               <p className="text-xs text-muted-foreground">
                 Online in last 24h
               </p>
@@ -193,7 +214,9 @@ export default function Index() {
               <Shield className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{currentStats.managersCount}</div>
+              <div className="text-2xl font-bold">
+                {currentStats.managersCount}
+              </div>
               <p className="text-xs text-muted-foreground">
                 Admin level access
               </p>
@@ -256,28 +279,38 @@ export default function Index() {
                 <Calendar className="h-5 w-5 mr-2" />
                 Quick Actions
               </CardTitle>
-              <CardDescription>
-                Common tasks you can perform
-              </CardDescription>
+              <CardDescription>Common tasks you can perform</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button asChild variant="outline" className="w-full justify-start">
+              <Button
+                asChild
+                variant="outline"
+                className="w-full justify-start"
+              >
                 <Link to="/user-management">
                   <Users className="h-4 w-4 mr-2" />
                   View All Members
                 </Link>
               </Button>
-              
+
               {isManager && (
                 <>
-                  <Button asChild variant="outline" className="w-full justify-start">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full justify-start"
+                  >
                     <Link to="/user-management">
                       <UserPlus className="h-4 w-4 mr-2" />
                       Add New Member
                     </Link>
                   </Button>
 
-                  <Button asChild variant="outline" className="w-full justify-start">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full justify-start"
+                  >
                     <Link to="/analytics">
                       <Activity className="h-4 w-4 mr-2" />
                       View Analytics & Activity

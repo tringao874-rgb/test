@@ -1,25 +1,31 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/lib/auth-context';
-import { Layout } from '@/components/Layout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
+import { useState, useEffect } from "react";
+import { useAuth } from "@/lib/auth-context";
+import { Layout } from "@/components/Layout";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+} from "@/components/ui/select";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   LineChart,
   Line,
@@ -27,102 +33,107 @@ import {
   Pie,
   Cell,
   AreaChart,
-  Area
-} from 'recharts';
-import { 
-  Activity, 
-  TrendingUp, 
-  Users, 
+  Area,
+} from "recharts";
+import {
+  Activity,
+  TrendingUp,
+  Users,
   CheckSquare,
   Clock,
   BarChart3,
   Calendar,
   Download,
-  Filter
-} from 'lucide-react';
-import { Navigate, Link } from 'react-router-dom';
+  Filter,
+} from "lucide-react";
+import { Navigate, Link } from "react-router-dom";
 
 export default function ActivityPage() {
   const { user, isAuthenticated, isLoading } = useAuth();
-  const [timeRange, setTimeRange] = useState('7days');
-  const [activityType, setActivityType] = useState('all');
+  const [timeRange, setTimeRange] = useState("7days");
+  const [activityType, setActivityType] = useState("all");
 
   // Mock data for charts
   const weeklyActivity = [
-    { day: 'Mon', logins: 8, tasks: 12, projects: 2 },
-    { day: 'Tue', logins: 12, tasks: 15, projects: 3 },
-    { day: 'Wed', logins: 10, tasks: 18, projects: 1 },
-    { day: 'Thu', logins: 15, tasks: 20, projects: 4 },
-    { day: 'Fri', logins: 18, tasks: 25, projects: 2 },
-    { day: 'Sat', logins: 5, tasks: 8, projects: 1 },
-    { day: 'Sun', logins: 3, tasks: 5, projects: 0 }
+    { day: "Mon", logins: 8, tasks: 12, projects: 2 },
+    { day: "Tue", logins: 12, tasks: 15, projects: 3 },
+    { day: "Wed", logins: 10, tasks: 18, projects: 1 },
+    { day: "Thu", logins: 15, tasks: 20, projects: 4 },
+    { day: "Fri", logins: 18, tasks: 25, projects: 2 },
+    { day: "Sat", logins: 5, tasks: 8, projects: 1 },
+    { day: "Sun", logins: 3, tasks: 5, projects: 0 },
   ];
 
   const monthlyTrends = [
-    { month: 'Jan', users: 8, projects: 3, tasks: 45 },
-    { month: 'Feb', users: 12, projects: 5, tasks: 68 },
-    { month: 'Mar', users: 15, projects: 7, tasks: 89 },
-    { month: 'Apr', users: 18, projects: 9, tasks: 112 },
-    { month: 'May', users: 22, projects: 12, tasks: 145 },
-    { month: 'Jun', users: 25, projects: 15, tasks: 178 }
+    { month: "Jan", users: 8, projects: 3, tasks: 45 },
+    { month: "Feb", users: 12, projects: 5, tasks: 68 },
+    { month: "Mar", users: 15, projects: 7, tasks: 89 },
+    { month: "Apr", users: 18, projects: 9, tasks: 112 },
+    { month: "May", users: 22, projects: 12, tasks: 145 },
+    { month: "Jun", users: 25, projects: 15, tasks: 178 },
   ];
 
   const taskDistribution = [
-    { name: 'Completed', value: 45, color: '#10B981' },
-    { name: 'In Progress', value: 25, color: '#3B82F6' },
-    { name: 'Pending', value: 20, color: '#F59E0B' },
-    { name: 'Overdue', value: 10, color: '#EF4444' }
+    { name: "Completed", value: 45, color: "#10B981" },
+    { name: "In Progress", value: 25, color: "#3B82F6" },
+    { name: "Pending", value: 20, color: "#F59E0B" },
+    { name: "Overdue", value: 10, color: "#EF4444" },
   ];
 
   const userActivity = [
-    { name: 'Jane Smith', tasksCompleted: 15, projectsLed: 2, hoursWorked: 42 },
-    { name: 'Bob Wilson', tasksCompleted: 12, projectsLed: 1, hoursWorked: 38 },
-    { name: 'Sarah Johnson', tasksCompleted: 18, projectsLed: 3, hoursWorked: 45 },
-    { name: 'Mike Davis', tasksCompleted: 10, projectsLed: 1, hoursWorked: 35 },
-    { name: 'Admin User', tasksCompleted: 8, projectsLed: 4, hoursWorked: 40 }
+    { name: "Jane Smith", tasksCompleted: 15, projectsLed: 2, hoursWorked: 42 },
+    { name: "Bob Wilson", tasksCompleted: 12, projectsLed: 1, hoursWorked: 38 },
+    {
+      name: "Sarah Johnson",
+      tasksCompleted: 18,
+      projectsLed: 3,
+      hoursWorked: 45,
+    },
+    { name: "Mike Davis", tasksCompleted: 10, projectsLed: 1, hoursWorked: 35 },
+    { name: "Admin User", tasksCompleted: 8, projectsLed: 4, hoursWorked: 40 },
   ];
 
   const recentActivities = [
     {
-      id: '1',
-      user: 'Jane Smith',
-      action: 'Completed task',
-      details: 'Design new homepage layout',
-      timestamp: '2 minutes ago',
-      type: 'task'
+      id: "1",
+      user: "Jane Smith",
+      action: "Completed task",
+      details: "Design new homepage layout",
+      timestamp: "2 minutes ago",
+      type: "task",
     },
     {
-      id: '2',
-      user: 'Bob Wilson',
-      action: 'Started project',
-      details: 'Security Audit Phase 2',
-      timestamp: '15 minutes ago',
-      type: 'project'
+      id: "2",
+      user: "Bob Wilson",
+      action: "Started project",
+      details: "Security Audit Phase 2",
+      timestamp: "15 minutes ago",
+      type: "project",
     },
     {
-      id: '3',
-      user: 'Sarah Johnson',
-      action: 'User login',
-      details: 'Logged in from 192.168.1.50',
-      timestamp: '32 minutes ago',
-      type: 'login'
+      id: "3",
+      user: "Sarah Johnson",
+      action: "User login",
+      details: "Logged in from 192.168.1.50",
+      timestamp: "32 minutes ago",
+      type: "login",
     },
     {
-      id: '4',
-      user: 'Mike Davis',
-      action: 'Updated task',
-      details: 'Mobile UI components - changed priority to high',
-      timestamp: '1 hour ago',
-      type: 'task'
+      id: "4",
+      user: "Mike Davis",
+      action: "Updated task",
+      details: "Mobile UI components - changed priority to high",
+      timestamp: "1 hour ago",
+      type: "task",
     },
     {
-      id: '5',
-      user: 'Admin User',
-      action: 'Created user',
-      details: 'Added new team member: Alex Chen',
-      timestamp: '2 hours ago',
-      type: 'user'
-    }
+      id: "5",
+      user: "Admin User",
+      action: "Created user",
+      details: "Added new team member: Alex Chen",
+      timestamp: "2 hours ago",
+      type: "user",
+    },
   ];
 
   if (isLoading) {
@@ -140,20 +151,29 @@ export default function ActivityPage() {
     return <Navigate to="/login" replace />;
   }
 
-  const isManager = user?.role === 'manager';
+  const isManager = user?.role === "manager";
 
   const getActivityIcon = (type) => {
     switch (type) {
-      case 'task': return <CheckSquare className="h-4 w-4 text-blue-600" />;
-      case 'project': return <BarChart3 className="h-4 w-4 text-green-600" />;
-      case 'login': return <Users className="h-4 w-4 text-purple-600" />;
-      case 'user': return <Users className="h-4 w-4 text-orange-600" />;
-      default: return <Activity className="h-4 w-4 text-gray-600" />;
+      case "task":
+        return <CheckSquare className="h-4 w-4 text-blue-600" />;
+      case "project":
+        return <BarChart3 className="h-4 w-4 text-green-600" />;
+      case "login":
+        return <Users className="h-4 w-4 text-purple-600" />;
+      case "user":
+        return <Users className="h-4 w-4 text-orange-600" />;
+      default:
+        return <Activity className="h-4 w-4 text-gray-600" />;
     }
   };
 
   const getInitials = (name) => {
-    return name.split(' ').map(n => n.charAt(0)).join('').toUpperCase();
+    return name
+      .split(" ")
+      .map((n) => n.charAt(0))
+      .join("")
+      .toUpperCase();
   };
 
   return (
@@ -196,9 +216,15 @@ export default function ActivityPage() {
             <CardContent className="flex items-center p-6">
               <Activity className="h-8 w-8 text-blue-600 mr-4" />
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Activities</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">1,234</p>
-                <p className="text-xs text-green-600 dark:text-green-400">+12% from last week</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  Total Activities
+                </p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  1,234
+                </p>
+                <p className="text-xs text-green-600 dark:text-green-400">
+                  +12% from last week
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -206,9 +232,15 @@ export default function ActivityPage() {
             <CardContent className="flex items-center p-6">
               <Users className="h-8 w-8 text-green-600 mr-4" />
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Users</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">15</p>
-                <p className="text-xs text-green-600 dark:text-green-400">+2 new this week</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  Active Users
+                </p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  15
+                </p>
+                <p className="text-xs text-green-600 dark:text-green-400">
+                  +2 new this week
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -216,9 +248,15 @@ export default function ActivityPage() {
             <CardContent className="flex items-center p-6">
               <CheckSquare className="h-8 w-8 text-purple-600 mr-4" />
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Tasks Completed</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">89</p>
-                <p className="text-xs text-green-600 dark:text-green-400">+8% completion rate</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  Tasks Completed
+                </p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  89
+                </p>
+                <p className="text-xs text-green-600 dark:text-green-400">
+                  +8% completion rate
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -226,9 +264,15 @@ export default function ActivityPage() {
             <CardContent className="flex items-center p-6">
               <TrendingUp className="h-8 w-8 text-orange-600 mr-4" />
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Productivity</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">92%</p>
-                <p className="text-xs text-green-600 dark:text-green-400">+5% this month</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  Productivity
+                </p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  92%
+                </p>
+                <p className="text-xs text-green-600 dark:text-green-400">
+                  +5% this month
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -248,7 +292,8 @@ export default function ActivityPage() {
               <CardHeader>
                 <CardTitle>Weekly Activity Trend</CardTitle>
                 <CardDescription>
-                  User logins, task completions, and project activities over the past week
+                  User logins, task completions, and project activities over the
+                  past week
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -258,9 +303,30 @@ export default function ActivityPage() {
                     <XAxis dataKey="day" />
                     <YAxis />
                     <Tooltip />
-                    <Area type="monotone" dataKey="logins" stackId="1" stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.6} />
-                    <Area type="monotone" dataKey="tasks" stackId="1" stroke="#10B981" fill="#10B981" fillOpacity={0.6} />
-                    <Area type="monotone" dataKey="projects" stackId="1" stroke="#F59E0B" fill="#F59E0B" fillOpacity={0.6} />
+                    <Area
+                      type="monotone"
+                      dataKey="logins"
+                      stackId="1"
+                      stroke="#3B82F6"
+                      fill="#3B82F6"
+                      fillOpacity={0.6}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="tasks"
+                      stackId="1"
+                      stroke="#10B981"
+                      fill="#10B981"
+                      fillOpacity={0.6}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="projects"
+                      stackId="1"
+                      stroke="#F59E0B"
+                      fill="#F59E0B"
+                      fillOpacity={0.6}
+                    />
                   </AreaChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -307,7 +373,10 @@ export default function ActivityPage() {
                 <CardContent>
                   <div className="space-y-4 max-h-[250px] overflow-y-auto">
                     {recentActivities.map((activity) => (
-                      <div key={activity.id} className="flex items-start space-x-3">
+                      <div
+                        key={activity.id}
+                        className="flex items-start space-x-3"
+                      >
                         <div className="flex-shrink-0">
                           {getActivityIcon(activity.type)}
                         </div>
@@ -346,9 +415,24 @@ export default function ActivityPage() {
                     <XAxis dataKey="month" />
                     <YAxis />
                     <Tooltip />
-                    <Line type="monotone" dataKey="users" stroke="#3B82F6" strokeWidth={3} />
-                    <Line type="monotone" dataKey="projects" stroke="#10B981" strokeWidth={3} />
-                    <Line type="monotone" dataKey="tasks" stroke="#F59E0B" strokeWidth={3} />
+                    <Line
+                      type="monotone"
+                      dataKey="users"
+                      stroke="#3B82F6"
+                      strokeWidth={3}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="projects"
+                      stroke="#10B981"
+                      strokeWidth={3}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="tasks"
+                      stroke="#F59E0B"
+                      strokeWidth={3}
+                    />
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -390,7 +474,10 @@ export default function ActivityPage() {
               <CardContent>
                 <div className="space-y-4">
                   {userActivity.map((user, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
+                    >
                       <div className="flex items-center space-x-4">
                         <Avatar className="h-10 w-10">
                           <AvatarFallback>
@@ -406,7 +493,7 @@ export default function ActivityPage() {
                           </p>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center space-x-8">
                         <div className="text-center">
                           <p className="text-sm font-medium text-gray-900 dark:text-white">
@@ -452,7 +539,10 @@ export default function ActivityPage() {
                     </CardDescription>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Select value={activityType} onValueChange={setActivityType}>
+                    <Select
+                      value={activityType}
+                      onValueChange={setActivityType}
+                    >
                       <SelectTrigger className="w-[120px]">
                         <SelectValue />
                       </SelectTrigger>
@@ -475,46 +565,57 @@ export default function ActivityPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {recentActivities.concat([
-                    {
-                      id: '6',
-                      user: 'Jane Smith',
-                      action: 'File upload',
-                      details: 'Uploaded design mockups for homepage',
-                      timestamp: '3 hours ago',
-                      type: 'task'
-                    },
-                    {
-                      id: '7',
-                      user: 'System',
-                      action: 'Backup completed',
-                      details: 'Daily database backup completed successfully',
-                      timestamp: '6 hours ago',
-                      type: 'system'
-                    }
-                  ]).filter(activity => activityType === 'all' || activity.type === activityType).map((activity) => (
-                    <div key={activity.id} className="flex items-start space-x-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
-                      <div className="flex-shrink-0 mt-1">
-                        {getActivityIcon(activity.type)}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <p className="text-sm font-medium text-gray-900 dark:text-white">
-                            {activity.user}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {activity.timestamp}
-                          </p>
+                  {recentActivities
+                    .concat([
+                      {
+                        id: "6",
+                        user: "Jane Smith",
+                        action: "File upload",
+                        details: "Uploaded design mockups for homepage",
+                        timestamp: "3 hours ago",
+                        type: "task",
+                      },
+                      {
+                        id: "7",
+                        user: "System",
+                        action: "Backup completed",
+                        details: "Daily database backup completed successfully",
+                        timestamp: "6 hours ago",
+                        type: "system",
+                      },
+                    ])
+                    .filter(
+                      (activity) =>
+                        activityType === "all" ||
+                        activity.type === activityType,
+                    )
+                    .map((activity) => (
+                      <div
+                        key={activity.id}
+                        className="flex items-start space-x-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg"
+                      >
+                        <div className="flex-shrink-0 mt-1">
+                          {getActivityIcon(activity.type)}
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          <strong>{activity.action}:</strong> {activity.details}
-                        </p>
-                        <Badge variant="outline" className="mt-1 text-xs">
-                          {activity.type}
-                        </Badge>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm font-medium text-gray-900 dark:text-white">
+                              {activity.user}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {activity.timestamp}
+                            </p>
+                          </div>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <strong>{activity.action}:</strong>{" "}
+                            {activity.details}
+                          </p>
+                          <Badge variant="outline" className="mt-1 text-xs">
+                            {activity.type}
+                          </Badge>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </CardContent>
             </Card>
