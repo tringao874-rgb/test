@@ -103,7 +103,7 @@ export default function Chat() {
         id: 'p3',
         userId: '3',
         userName: 'Jane Smith',
-        message: 'Bạn có rảnh để review thiết kế không?',
+        message: 'Are you free to review the design?',
         timestamp: new Date(Date.now() - 20 * 60 * 1000).toISOString(),
         type: 'text'
       }
