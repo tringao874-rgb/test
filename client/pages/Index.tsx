@@ -271,23 +271,16 @@ export default function Index() {
               {isManager && (
                 <>
                   <Button asChild variant="outline" className="w-full justify-start">
-                    <Link to="/add-member">
+                    <Link to="/user-management">
                       <UserPlus className="h-4 w-4 mr-2" />
-                      Add New Member
+                      Thêm thành viên mới
                     </Link>
                   </Button>
-                  
+
                   <Button asChild variant="outline" className="w-full justify-start">
-                    <Link to="/activity">
+                    <Link to="/analytics">
                       <Activity className="h-4 w-4 mr-2" />
-                      View Activity Log
-                    </Link>
-                  </Button>
-                  
-                  <Button asChild variant="outline" className="w-full justify-start">
-                    <Link to="/settings">
-                      <Shield className="h-4 w-4 mr-2" />
-                      Group Settings
+                      Xem phân tích & hoạt động
                     </Link>
                   </Button>
                 </>
