@@ -257,7 +257,7 @@ export default function Index() {
                 Quick Actions
               </CardTitle>
               <CardDescription>
-                Các tác vụ thông thường bạn có thể th��c hiện
+                Common tasks you can perform
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
