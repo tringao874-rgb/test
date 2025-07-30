@@ -219,13 +219,13 @@ export default function AddMember() {
   };
 
   const handleDeleteUser = (userId) => {
-    if (confirm('Are you sure you want to delete this user?')) {
+    if (confirm('Bạn có chắc chắn muốn xóa người d��ng này?')) {
       setUsers(prev => prev.filter(u => u.id !== userId));
     }
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return 'Never';
+    if (!dateString) return 'Chưa bao giờ';
     return new Date(dateString).toLocaleString();
   };
 
