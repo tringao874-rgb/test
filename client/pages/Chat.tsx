@@ -93,7 +93,7 @@ export default function Chat() {
         id: 'p2',
         userId: user?.id,
         userName: `${user?.firstName} ${user?.lastName}`,
-        message: 'Chắc chắn rồi! Bạn cần giúp gì?',
+        message: 'Sure! What do you need help with?',
         timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
         type: 'text'
       }
