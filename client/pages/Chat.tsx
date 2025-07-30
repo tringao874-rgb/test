@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   MessageSquare, 
   Send, 
@@ -15,24 +16,31 @@ import {
   Paperclip,
   Phone,
   Video,
-  MoreVertical
+  MoreVertical,
+  UserPlus,
+  Search,
+  MessageCircle,
+  X
 } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
 
 export default function Chat() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const [messages, setMessages] = useState([]);
+  const [privateChats, setPrivateChats] = useState({});
   const [newMessage, setNewMessage] = useState('');
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [activeChat, setActiveChat] = useState('group'); // 'group' or userId for private chat
+  const [searchUsers, setSearchUsers] = useState('');
   const messagesEndRef = useRef(null);
 
-  // Mock data for demonstration
+  // Mock data for group chat
   const mockMessages = [
     {
       id: '1',
       userId: '1',
       userName: 'Admin User',
-      message: 'Welcome to the team chat! 👋',
+      message: 'Chào mừng đến với trò chuyện nhóm! 👋',
       timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
       type: 'text'
     },
@@ -40,7 +48,7 @@ export default function Chat() {
       id: '2',
       userId: '2',
       userName: 'Regular User',
-      message: 'Thanks! Excited to be working with everyone.',
+      message: 'Cảm ơn! Rất vui được làm việc với mọi người.',
       timestamp: new Date(Date.now() - 90 * 60 * 1000).toISOString(),
       type: 'text'
     },
@@ -48,7 +56,7 @@ export default function Chat() {
       id: '3',
       userId: '3',
       userName: 'Jane Smith',
-      message: 'Has anyone seen the latest project updates?',
+      message: 'Có ai thấy cập nhật dự án mới nhất chưa?',
       timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
       type: 'text'
     },
@@ -56,7 +64,7 @@ export default function Chat() {
       id: '4',
       userId: '1',
       userName: 'Admin User',
-      message: 'Yes, I just posted them in the Projects section. Check them out!',
+      message: 'Có, tôi vừa đăng chúng trong phần Dự án. Hãy xem nhé!',
       timestamp: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
       type: 'text'
     }
@@ -66,19 +74,53 @@ export default function Chat() {
     { id: '1', name: 'Admin User', role: 'manager', status: 'online' },
     { id: '2', name: 'Regular User', role: 'member', status: 'online' },
     { id: '3', name: 'Jane Smith', role: 'member', status: 'away' },
-    { id: '4', name: 'Bob Wilson', role: 'member', status: 'offline' }
+    { id: '4', name: 'Bob Wilson', role: 'member', status: 'offline' },
+    { id: '5', name: 'Sarah Johnson', role: 'member', status: 'online' }
   ];
+
+  // Mock private chat data
+  const mockPrivateChats = {
+    '2': [
+      {
+        id: 'p1',
+        userId: '2',
+        userName: 'Regular User',
+        message: 'Chào! Bạn có thể giúp tôi với dự án website không?',
+        timestamp: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
+        type: 'text'
+      },
+      {
+        id: 'p2',
+        userId: user?.id,
+        userName: `${user?.firstName} ${user?.lastName}`,
+        message: 'Chắc chắn rồi! Bạn cần giúp gì?',
+        timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+        type: 'text'
+      }
+    ],
+    '3': [
+      {
+        id: 'p3',
+        userId: '3',
+        userName: 'Jane Smith',
+        message: 'Bạn có rảnh để review thiết kế không?',
+        timestamp: new Date(Date.now() - 20 * 60 * 1000).toISOString(),
+        type: 'text'
+      }
+    ]
+  };
 
   useEffect(() => {
     if (isAuthenticated) {
       setMessages(mockMessages);
       setOnlineUsers(mockOnlineUsers);
+      setPrivateChats(mockPrivateChats);
     }
   }, [isAuthenticated]);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, privateChats, activeChat]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -89,7 +131,7 @@ export default function Chat() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+          <p className="text-gray-600 dark:text-gray-400">Đang tải...</p>
         </div>
       </div>
     );
@@ -112,23 +154,42 @@ export default function Chat() {
       type: 'text'
     };
 
-    setMessages(prev => [...prev, message]);
+    if (activeChat === 'group') {
+      setMessages(prev => [...prev, message]);
+    } else {
+      setPrivateChats(prev => ({
+        ...prev,
+        [activeChat]: [...(prev[activeChat] || []), message]
+      }));
+    }
+    
     setNewMessage('');
   };
 
-  const formatTime = (timestamp) => {
+  const startPrivateChat = (userId) => {
+    if (userId === user.id) return; // Can't chat with yourself
+    
+    if (!privateChats[userId]) {
+      setPrivateChats(prev => ({
+        ...prev,
+        [userId]: []
+      }));
+    }
+    setActiveChat(userId);
+  };
+
+  const formatTimeAgo = (timestamp) => {
     const date = new Date(timestamp);
     const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const minutes = Math.floor(diff / (1000 * 60));
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-    if (minutes < 1) return 'Just now';
-    if (minutes < 60) return `${minutes}m`;
-    if (hours < 24) return `${hours}h`;
-    if (days < 7) return `${days}d`;
-    return date.toLocaleDateString();
+    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
+    
+    if (diffInMinutes < 60) {
+      return `${diffInMinutes} phút trước`;
+    } else if (diffInMinutes < 1440) {
+      return `${Math.floor(diffInMinutes / 60)} giờ trước`;
+    } else {
+      return `${Math.floor(diffInMinutes / 1440)} ngày trước`;
+    }
   };
 
   const getInitials = (name) => {
@@ -143,9 +204,148 @@ export default function Chat() {
     }
   };
 
+  const getCurrentMessages = () => {
+    if (activeChat === 'group') {
+      return messages;
+    }
+    return privateChats[activeChat] || [];
+  };
+
+  const getCurrentChatTitle = () => {
+    if (activeChat === 'group') {
+      return 'Trò chuyện nhóm';
+    }
+    const chatUser = onlineUsers.find(u => u.id === activeChat);
+    return chatUser ? `${chatUser.name}` : 'Trò chuyện riêng';
+  };
+
+  const getActiveChatUsers = () => {
+    if (activeChat === 'group') {
+      return onlineUsers.filter(u => u.status === 'online').length;
+    }
+    const chatUser = onlineUsers.find(u => u.id === activeChat);
+    return chatUser ? chatUser.status : 'offline';
+  };
+
+  const filteredUsers = onlineUsers.filter(u => 
+    u.id !== user.id && 
+    u.name.toLowerCase().includes(searchUsers.toLowerCase())
+  );
+
   return (
     <Layout>
       <div className="h-[calc(100vh-8rem)] flex gap-6">
+        {/* Chat List Sidebar */}
+        <div className="w-80 space-y-4">
+          {/* Chat Type Tabs */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">Trò chuy���n</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Button
+                variant={activeChat === 'group' ? 'default' : 'outline'}
+                className="w-full justify-start"
+                onClick={() => setActiveChat('group')}
+              >
+                <Users className="h-4 w-4 mr-2" />
+                Nhóm ({onlineUsers.filter(u => u.status === 'online').length} trực tuyến)
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Private Chats */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm">Tin nhắn riêng</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {Object.keys(privateChats).map(userId => {
+                const chatUser = onlineUsers.find(u => u.id === userId);
+                if (!chatUser) return null;
+                
+                const lastMessage = privateChats[userId]?.slice(-1)[0];
+                
+                return (
+                  <Button
+                    key={userId}
+                    variant={activeChat === userId ? 'default' : 'ghost'}
+                    className="w-full justify-start h-auto p-3"
+                    onClick={() => setActiveChat(userId)}
+                  >
+                    <div className="flex items-center space-x-3 w-full">
+                      <div className="relative">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback>
+                            {getInitials(chatUser.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white dark:border-gray-800 ${getStatusColor(chatUser.status)}`} />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <p className="text-sm font-medium truncate">{chatUser.name}</p>
+                        {lastMessage && (
+                          <p className="text-xs text-muted-foreground truncate">
+                            {lastMessage.message}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </Button>
+                );
+              })}
+            </CardContent>
+          </Card>
+
+          {/* Start New Chat */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm">Bắt đầu trò chuyện mới</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  placeholder="Tìm thành viên..."
+                  value={searchUsers}
+                  onChange={(e) => setSearchUsers(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <ScrollArea className="h-40">
+                <div className="space-y-1">
+                  {filteredUsers.map((user) => (
+                    <Button
+                      key={user.id}
+                      variant="ghost"
+                      className="w-full justify-start h-auto p-2"
+                      onClick={() => startPrivateChat(user.id)}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div className="relative">
+                          <Avatar className="h-6 w-6">
+                            <AvatarFallback className="text-xs">
+                              {getInitials(user.name)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className={`absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full border border-white dark:border-gray-800 ${getStatusColor(user.status)}`} />
+                        </div>
+                        <div className="flex-1 text-left">
+                          <p className="text-sm">{user.name}</p>
+                          <Badge variant={user.role === 'manager' ? 'default' : 'secondary'} className="text-xs">
+                            {user.role === 'manager' ? 'Quản lý' : 'Thành viên'}
+                          </Badge>
+                        </div>
+                        <MessageCircle className="h-4 w-4" />
+                      </div>
+                    </Button>
+                  ))}
+                </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Chat Area */}
         <div className="flex-1 flex flex-col">
           <Card className="flex-1 flex flex-col">
@@ -153,19 +353,26 @@ export default function Chat() {
               <div className="flex items-center space-x-3">
                 <MessageSquare className="h-6 w-6 text-primary" />
                 <div>
-                  <CardTitle className="text-lg">Team Chat</CardTitle>
+                  <CardTitle className="text-lg">{getCurrentChatTitle()}</CardTitle>
                   <p className="text-sm text-muted-foreground">
-                    {onlineUsers.filter(u => u.status === 'online').length} online
+                    {activeChat === 'group' 
+                      ? `${getActiveChatUsers()} thành viên trực tuyến`
+                      : `Trạng thái: ${getActiveChatUsers() === 'online' ? 'Trực tuyến' : getActiveChatUsers() === 'away' ? 'Vắng mặt' : 'Ngoại tuyến'}`
+                    }
                   </p>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
-                <Button variant="outline" size="sm">
-                  <Phone className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Video className="h-4 w-4" />
-                </Button>
+                {activeChat !== 'group' && (
+                  <>
+                    <Button variant="outline" size="sm">
+                      <Phone className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <Video className="h-4 w-4" />
+                    </Button>
+                  </>
+                )}
                 <Button variant="outline" size="sm">
                   <MoreVertical className="h-4 w-4" />
                 </Button>
@@ -176,9 +383,9 @@ export default function Chat() {
               {/* Messages */}
               <ScrollArea className="flex-1 p-4">
                 <div className="space-y-4">
-                  {messages.map((message, index) => {
+                  {getCurrentMessages().map((message, index) => {
                     const isOwnMessage = message.userId === user.id;
-                    const showAvatar = index === 0 || messages[index - 1].userId !== message.userId;
+                    const showAvatar = index === 0 || getCurrentMessages()[index - 1].userId !== message.userId;
                     
                     return (
                       <div
@@ -201,7 +408,7 @@ export default function Chat() {
                                 {message.userName}
                               </span>
                               <span className="text-xs text-muted-foreground">
-                                {formatTime(message.timestamp)}
+                                {formatTimeAgo(message.timestamp)}
                               </span>
                             </div>
                           )}
@@ -231,7 +438,7 @@ export default function Chat() {
                   <Input
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Type your message..."
+                    placeholder={activeChat === 'group' ? 'Nhập tin nhắn cho nhóm...' : 'Nhập tin nhắn riêng...'}
                     className="flex-1"
                   />
                   <Button variant="outline" size="sm" type="button">
@@ -242,66 +449,6 @@ export default function Chat() {
                   </Button>
                 </form>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Online Users Sidebar */}
-        <div className="w-64 space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center text-sm">
-                <Users className="h-4 w-4 mr-2" />
-                Team Members ({onlineUsers.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {onlineUsers.map((user) => (
-                <div key={user.id} className="flex items-center space-x-3">
-                  <div className="relative">
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback>
-                        {getInitials(user.name)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white dark:border-gray-800 ${getStatusColor(user.status)}`} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                      {user.name}
-                    </p>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant={user.role === 'manager' ? 'default' : 'secondary'} className="text-xs">
-                        {user.role}
-                      </Badge>
-                      <span className="text-xs text-muted-foreground capitalize">
-                        {user.status}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          {/* Chat Features */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm">Chat Features</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Button variant="outline" size="sm" className="w-full justify-start">
-                <Paperclip className="h-4 w-4 mr-2" />
-                Share Files
-              </Button>
-              <Button variant="outline" size="sm" className="w-full justify-start">
-                <Video className="h-4 w-4 mr-2" />
-                Start Video Call
-              </Button>
-              <Button variant="outline" size="sm" className="w-full justify-start">
-                <Users className="h-4 w-4 mr-2" />
-                Create Group
-              </Button>
             </CardContent>
           </Card>
         </div>
