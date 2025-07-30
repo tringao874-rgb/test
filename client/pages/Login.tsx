@@ -116,21 +116,21 @@ export default function Login() {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Signing in...
+                    Đang đăng nhập...
                   </>
                 ) : (
                   <>
                     <Shield className="mr-2 h-4 w-4" />
-                    Sign In
+                    Đăng nhập
                   </>
                 )}
               </Button>
             </form>
 
             <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-              <p>Demo credentials:</p>
-              <p><strong>Manager:</strong> admin / admin123</p>
-              <p><strong>Member:</strong> user / user123</p>
+              <p>Tài khoản demo:</p>
+              <p><strong>Quản lý:</strong> admin / admin123</p>
+              <p><strong>Thành viên:</strong> user / user123</p>
             </div>
           </CardContent>
         </Card>
