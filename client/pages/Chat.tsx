@@ -48,7 +48,7 @@ export default function Chat() {
       id: '2',
       userId: '2',
       userName: 'Regular User',
-      message: 'Cảm ơn! Rất vui được làm việc với mọi người.',
+      message: 'Thanks! Excited to be working with everyone.',
       timestamp: new Date(Date.now() - 90 * 60 * 1000).toISOString(),
       type: 'text'
     },
