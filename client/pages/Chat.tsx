@@ -300,13 +300,13 @@ export default function Chat() {
           {/* Start New Chat */}
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm">Bắt đầu trò chuyện mới</CardTitle>
+              <CardTitle className="text-sm">Start New Chat</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
-                  placeholder="Tìm thành viên..."
+                  placeholder="Search members..."
                   value={searchUsers}
                   onChange={(e) => setSearchUsers(e.target.value)}
                   className="pl-10"
