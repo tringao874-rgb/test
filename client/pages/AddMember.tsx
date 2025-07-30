@@ -248,10 +248,10 @@ export default function AddMember() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-              User Management
+              Quản lý người dùng
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-1">
-              Manage team members and their access levels
+              Quản lý thành viên nhóm và cấp độ truy cập của họ
             </p>
           </div>
           <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
