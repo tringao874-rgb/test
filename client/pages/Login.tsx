@@ -62,14 +62,14 @@ export default function Login() {
             </div>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">GroupManager</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">Sign in to your account</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Đăng nhập vào tài khoản của bạn</p>
         </div>
 
         <Card>
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">Welcome back</CardTitle>
+            <CardTitle className="text-2xl text-center">Chào mừng trở lại</CardTitle>
             <CardDescription className="text-center">
-              Enter your credentials to access the group management system
+              Nhập thông tin đ��ng nhập để truy cập hệ thống quản lý nhóm
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -79,9 +79,9 @@ export default function Login() {
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              
+
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="username">Tên đăng nhập</Label>
                 <Input
                   id="username"
                   name="username"
