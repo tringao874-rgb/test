@@ -1,9 +1,10 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/lib/auth-context';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +21,14 @@ import {
   Settings, 
   LogOut, 
   Shield,
-  Home
+  Home,
+  Menu,
+  MessageSquare,
+  FolderOpen,
+  CheckSquare,
+  ChevronLeft,
+  ChevronRight,
+  BarChart3
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -30,6 +38,8 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   if (!user) {
     return <>{children}</>;
@@ -38,122 +48,170 @@ export function Layout({ children }: LayoutProps) {
   const isManager = user.role === 'manager';
   
   const navigation = [
-    { name: 'Dashboard', href: '/', icon: Home },
-    { name: 'Members', href: '/members', icon: Users },
+    { name: 'Dashboard', href: '/', icon: Home, description: 'Overview and stats' },
+    { name: 'Chat', href: '/chat', icon: MessageSquare, description: 'Team communication' },
+    { name: 'Projects', href: '/projects', icon: FolderOpen, description: 'Project management' },
+    { name: 'Tasks', href: '/tasks', icon: CheckSquare, description: 'Task assignments' },
+    { name: 'Members', href: '/members', icon: Users, description: 'Team members' },
     ...(isManager ? [
-      { name: 'Add Member', href: '/add-member', icon: UserPlus },
-      { name: 'Activity Log', href: '/activity', icon: Activity },
-      { name: 'Settings', href: '/settings', icon: Settings }
+      { name: 'User Management', href: '/user-management', icon: UserPlus, description: 'Manage users' },
+      { name: 'Analytics', href: '/analytics', icon: BarChart3, description: 'Activity charts' },
+      { name: 'Activity Log', href: '/activity', icon: Activity, description: 'System activity' },
+      { name: 'Settings', href: '/settings', icon: Settings, description: 'System settings' }
     ] : [])
   ];
 
-  const getInitials = (firstName: string, lastName: string) => {
+  const getInitials = (firstName, lastName) => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
 
+  const SidebarContent = () => (
+    <div className="flex flex-col h-full">
+      {/* Logo and Brand */}
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <Link to="/" className="flex items-center space-x-2">
+          <div className="p-2 bg-primary rounded-lg">
+            <Users className="h-6 w-6 text-primary-foreground" />
+          </div>
+          {!sidebarCollapsed && (
+            <span className="text-xl font-bold text-gray-900 dark:text-white">
+              GroupManager
+            </span>
+          )}
+        </Link>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          className="hidden lg:flex h-8 w-8 p-0"
+        >
+          {sidebarCollapsed ? (
+            <ChevronRight className="h-4 w-4" />
+          ) : (
+            <ChevronLeft className="h-4 w-4" />
+          )}
+        </Button>
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex-1 p-4 space-y-2">
+        {navigation.map((item) => {
+          const isActive = location.pathname === item.href;
+          return (
+            <Link
+              key={item.name}
+              to={item.href}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors group ${
+                isActive
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+              }`}
+              title={sidebarCollapsed ? item.description : ''}
+            >
+              <item.icon className={`h-5 w-5 ${sidebarCollapsed ? '' : 'mr-3'}`} />
+              {!sidebarCollapsed && (
+                <div className="flex-1">
+                  <div>{item.name}</div>
+                  <div className="text-xs opacity-60">{item.description}</div>
+                </div>
+              )}
+            </Link>
+          );
+        })}
+      </nav>
+
+      {/* User Profile */}
+      <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className={`w-full justify-start h-auto p-2 ${sidebarCollapsed ? 'px-2' : 'px-3'}`}>
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-primary text-primary-foreground">
+                  {getInitials(user.firstName, user.lastName)}
+                </AvatarFallback>
+              </Avatar>
+              {!sidebarCollapsed && (
+                <div className="ml-3 text-left flex-1">
+                  <p className="text-sm font-medium leading-none">
+                    {user.firstName} {user.lastName}
+                  </p>
+                  <p className="text-xs leading-none text-muted-foreground mt-1">
+                    {user.email}
+                  </p>
+                  <Badge variant={isManager ? "default" : "secondary"} className="text-xs mt-1">
+                    <Shield className="h-3 w-3 mr-1" />
+                    {user.role}
+                  </Badge>
+                </div>
+              )}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56" align="end" forceMount>
+            <DropdownMenuLabel className="font-normal">
+              <div className="flex flex-col space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  {user.firstName} {user.lastName}
+                </p>
+                <p className="text-xs leading-none text-muted-foreground">
+                  {user.email}
+                </p>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={logout} className="text-red-600 dark:text-red-400">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
-      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Link to="/" className="flex items-center space-x-2">
-                <div className="p-2 bg-primary rounded-lg">
-                  <Users className="h-6 w-6 text-primary-foreground" />
-                </div>
-                <span className="text-xl font-bold text-gray-900 dark:text-white">
-                  GroupManager
-                </span>
-              </Link>
+      {/* Desktop Sidebar */}
+      <div className={`hidden lg:fixed lg:inset-y-0 lg:flex lg:flex-col transition-all duration-300 ${
+        sidebarCollapsed ? 'lg:w-16' : 'lg:w-64'
+      } bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-sm z-40`}>
+        <SidebarContent />
+      </div>
+
+      {/* Mobile Header */}
+      <div className="lg:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="flex items-center justify-between h-16 px-4">
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="sm">
+                <Menu className="h-6 w-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-64 p-0">
+              <SidebarContent />
+            </SheetContent>
+          </Sheet>
+
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="p-2 bg-primary rounded-lg">
+              <Users className="h-6 w-6 text-primary-foreground" />
             </div>
+            <span className="text-xl font-bold text-gray-900 dark:text-white">
+              GroupManager
+            </span>
+          </Link>
 
-            <nav className="hidden md:flex space-x-4">
-              {navigation.map((item) => {
-                const isActive = location.pathname === item.href;
-                return (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                      isActive
-                        ? 'bg-primary text-primary-foreground'
-                        : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                    }`}
-                  >
-                    <item.icon className="h-4 w-4 mr-2" />
-                    {item.name}
-                  </Link>
-                );
-              })}
-            </nav>
-
-            <div className="flex items-center space-x-4">
-              <ThemeToggle />
-              
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback className="bg-primary text-primary-foreground">
-                        {getInitials(user.firstName, user.lastName)}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">
-                        {user.firstName} {user.lastName}
-                      </p>
-                      <p className="text-xs leading-none text-muted-foreground">
-                        {user.email}
-                      </p>
-                      <div className="flex items-center space-x-2 pt-1">
-                        <Badge variant={isManager ? "default" : "secondary"} className="text-xs">
-                          <Shield className="h-3 w-3 mr-1" />
-                          {user.role}
-                        </Badge>
-                      </div>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout} className="text-red-600 dark:text-red-400">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </div>
+          <ThemeToggle />
         </div>
+      </div>
 
-        {/* Mobile navigation */}
-        <div className="md:hidden border-t border-gray-200 dark:border-gray-700">
-          <div className="px-2 py-3 space-y-1">
-            {navigation.map((item) => {
-              const isActive = location.pathname === item.href;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                    isActive
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                  }`}
-                >
-                  <item.icon className="h-5 w-5 mr-3" />
-                  {item.name}
-                </Link>
-              );
-            })}
-          </div>
+      {/* Main Content */}
+      <main className={`transition-all duration-300 ${
+        sidebarCollapsed ? 'lg:pl-16' : 'lg:pl-64'
+      }`}>
+        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          {children}
         </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        {children}
       </main>
     </div>
   );
