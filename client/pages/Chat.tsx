@@ -355,9 +355,9 @@ export default function Chat() {
                 <div>
                   <CardTitle className="text-lg">{getCurrentChatTitle()}</CardTitle>
                   <p className="text-sm text-muted-foreground">
-                    {activeChat === 'group' 
-                      ? `${getActiveChatUsers()} thành viên trực tuyến`
-                      : `Trạng thái: ${getActiveChatUsers() === 'online' ? 'Trực tuyến' : getActiveChatUsers() === 'away' ? 'Vắng mặt' : 'Ngoại tuyến'}`
+                    {activeChat === 'group'
+                      ? `${getActiveChatUsers()} members online`
+                      : `Status: ${getActiveChatUsers() === 'online' ? 'Online' : getActiveChatUsers() === 'away' ? 'Away' : 'Offline'}`
                     }
                   </p>
                 </div>
