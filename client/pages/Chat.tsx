@@ -85,7 +85,7 @@ export default function Chat() {
         id: 'p1',
         userId: '2',
         userName: 'Regular User',
-        message: 'Chào! Bạn có thể giúp tôi với dự án website không?',
+        message: 'Hi! Can you help me with the website project?',
         timestamp: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
         type: 'text'
       },
