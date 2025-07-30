@@ -213,10 +213,10 @@ export default function Chat() {
 
   const getCurrentChatTitle = () => {
     if (activeChat === 'group') {
-      return 'Trò chuyện nhóm';
+      return 'Team Chat';
     }
     const chatUser = onlineUsers.find(u => u.id === activeChat);
-    return chatUser ? `${chatUser.name}` : 'Trò chuyện riêng';
+    return chatUser ? `${chatUser.name}` : 'Private Chat';
   };
 
   const getActiveChatUsers = () => {
