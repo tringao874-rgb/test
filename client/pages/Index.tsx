@@ -176,39 +176,39 @@ export default function Index() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Hoạt động hôm nay</CardTitle>
+              <CardTitle className="text-sm font-medium">Active Today</CardTitle>
               <UserCheck className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{currentStats.activeMembers}</div>
               <p className="text-xs text-muted-foreground">
-                Trực tuyến trong 24h qua
+                Online in last 24h
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Quản lý</CardTitle>
+              <CardTitle className="text-sm font-medium">Managers</CardTitle>
               <Shield className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{currentStats.managersCount}</div>
               <p className="text-xs text-muted-foreground">
-                Quyền truy cập quản trị
+                Admin level access
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Tăng trưởng</CardTitle>
+              <CardTitle className="text-sm font-medium">Growth</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">+2</div>
               <p className="text-xs text-muted-foreground">
-                Thành viên mới tuần này
+                New members this week
               </p>
             </CardContent>
           </Card>
