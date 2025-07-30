@@ -254,17 +254,17 @@ export default function Index() {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Calendar className="h-5 w-5 mr-2" />
-                Quick Actions
+                Hành động nhanh
               </CardTitle>
               <CardDescription>
-                Common tasks you can perform
+                Các tác vụ thông thường bạn có thể th��c hiện
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               <Button asChild variant="outline" className="w-full justify-start">
-                <Link to="/members">
+                <Link to="/user-management">
                   <Users className="h-4 w-4 mr-2" />
-                  View All Members
+                  Xem tất cả thành viên
                 </Link>
               </Button>
               
