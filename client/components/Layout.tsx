@@ -188,6 +188,9 @@ export function Layout({ children }: LayoutProps) {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0">
+              <SheetHeader className="sr-only">
+                <SheetTitle>Navigation Menu</SheetTitle>
+              </SheetHeader>
               <SidebarContent />
             </SheetContent>
           </Sheet>
