@@ -48,13 +48,13 @@ export function Layout({ children }: LayoutProps) {
   const isManager = user.role === 'manager';
   
   const navigation = [
-    { name: 'Bảng điều khiển', href: '/', icon: Home, description: 'Tổng quan và thống kê' },
-    { name: 'Trò chuyện', href: '/chat', icon: MessageSquare, description: 'Liên lạc nhóm' },
-    { name: 'Dự án', href: '/projects', icon: FolderOpen, description: 'Quản lý dự án' },
-    { name: 'Nhiệm vụ', href: '/tasks', icon: CheckSquare, description: 'Giao việc' },
+    { name: 'Dashboard', href: '/', icon: Home, description: 'Overview and stats' },
+    { name: 'Chat', href: '/chat', icon: MessageSquare, description: 'Team communication' },
+    { name: 'Projects', href: '/projects', icon: FolderOpen, description: 'Project management' },
+    { name: 'Tasks', href: '/tasks', icon: CheckSquare, description: 'Task assignments' },
     ...(isManager ? [
-      { name: 'Quản lý người dùng', href: '/user-management', icon: UserPlus, description: 'Quản lý người dùng' },
-      { name: 'Phân tích & Hoạt động', href: '/analytics', icon: BarChart3, description: 'Biểu đồ và nhật ký hoạt động' }
+      { name: 'User Management', href: '/user-management', icon: UserPlus, description: 'Manage users' },
+      { name: 'Analytics & Activity', href: '/analytics', icon: BarChart3, description: 'Charts and activity logs' }
     ] : [])
   ];
 
