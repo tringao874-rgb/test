@@ -280,7 +280,7 @@ export default function Index() {
                   <Button asChild variant="outline" className="w-full justify-start">
                     <Link to="/analytics">
                       <Activity className="h-4 w-4 mr-2" />
-                      Xem phân tích & hoạt động
+                      View Analytics & Activity
                     </Link>
                   </Button>
                 </>
