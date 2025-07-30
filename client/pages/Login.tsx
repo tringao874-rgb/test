@@ -37,7 +37,7 @@ export default function Login() {
     try {
       const result = await login(formData);
       if (!result.success) {
-        setError(result.message || 'Login failed');
+        setError(result.message || 'Đăng nhập thất bại');
       }
     } catch (err) {
       setError('An unexpected error occurred');
