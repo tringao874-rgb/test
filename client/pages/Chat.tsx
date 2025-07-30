@@ -40,7 +40,7 @@ export default function Chat() {
       id: '1',
       userId: '1',
       userName: 'Admin User',
-      message: 'Chào mừng đến với trò chuyện nhóm! 👋',
+      message: 'Welcome to the team chat! 👋',
       timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
       type: 'text'
     },
@@ -240,7 +240,7 @@ export default function Chat() {
           {/* Chat Type Tabs */}
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg">Trò chuy���n</CardTitle>
+              <CardTitle className="text-lg">Trò chuyện</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <Button
