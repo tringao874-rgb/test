@@ -189,26 +189,26 @@ export default function Index() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Managers</CardTitle>
+              <CardTitle className="text-sm font-medium">Quản lý</CardTitle>
               <Shield className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{currentStats.managersCount}</div>
               <p className="text-xs text-muted-foreground">
-                Admin level access
+                Quyền truy cập quản trị
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Growth</CardTitle>
+              <CardTitle className="text-sm font-medium">Tăng trưởng</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">+2</div>
               <p className="text-xs text-muted-foreground">
-                New members this week
+                Thành viên mới tuần này
               </p>
             </CardContent>
           </Card>
