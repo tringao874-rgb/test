@@ -49,7 +49,7 @@ export function Layout({ children }: LayoutProps) {
   
   const navigation = [
     { name: 'Bảng điều khiển', href: '/', icon: Home, description: 'Tổng quan và thống kê' },
-    { name: 'Trò chuyện', href: '/chat', icon: MessageSquare, description: 'Liên lạc nhóm' },
+    { name: 'Trò chuy��n', href: '/chat', icon: MessageSquare, description: 'Liên lạc nhóm' },
     { name: 'Dự án', href: '/projects', icon: FolderOpen, description: 'Quản lý dự án' },
     { name: 'Nhiệm vụ', href: '/tasks', icon: CheckSquare, description: 'Giao việc' },
     ...(isManager ? [
@@ -186,7 +186,7 @@ export function Layout({ children }: LayoutProps) {
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0">
               <SheetHeader className="sr-only">
-                <SheetTitle>Navigation Menu</SheetTitle>
+                <SheetTitle>Menu điều hướng</SheetTitle>
               </SheetHeader>
               <SidebarContent />
             </SheetContent>
