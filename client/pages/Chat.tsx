@@ -333,7 +333,7 @@ export default function Chat() {
                         <div className="flex-1 text-left">
                           <p className="text-sm">{user.name}</p>
                           <Badge variant={user.role === 'manager' ? 'default' : 'secondary'} className="text-xs">
-                            {user.role === 'manager' ? 'Quản lý' : 'Thành viên'}
+                            {user.role === 'manager' ? 'Manager' : 'Member'}
                           </Badge>
                         </div>
                         <MessageCircle className="h-4 w-4" />
