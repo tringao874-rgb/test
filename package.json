@@ -14,7 +14,7 @@
     "dev": "vite",
     "build": "npm run build:client && npm run build:server",
     "build:client": "vite build",
-    "build:server": "node -e \"const fs = require('fs'); fs.cpSync('server', 'dist/server', { recursive: true });\"",
+    "build:server": "node -e \"const fs = require('fs'); const path = require('path'); if (!fs.existsSync('dist')) fs.mkdirSync('dist'); const filter = (src) => !src.endsWith('.ts'); fs.cpSync('server', 'dist/server', { recursive: true, filter });\"",
     "start": "node dist/server/index.js",
     "test": "vitest --run",
     "format.fix": "prettier --write .",
