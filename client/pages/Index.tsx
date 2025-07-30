@@ -273,7 +273,7 @@ export default function Index() {
                   <Button asChild variant="outline" className="w-full justify-start">
                     <Link to="/user-management">
                       <UserPlus className="h-4 w-4 mr-2" />
-                      Thêm thành viên mới
+                      Add New Member
                     </Link>
                   </Button>
 
