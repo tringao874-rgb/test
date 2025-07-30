@@ -15,17 +15,21 @@ npm run build
 ```
 
 This creates:
+
 - `dist/spa/` - Frontend static files
 - `dist/server/` - Backend JavaScript files (NO .ts files)
 
 ### 🚀 IIS Deployment Steps
 
 1. **Copy Files**
+
    - Copy entire project folder to your Windows server
    - Ensure `dist/` folder exists with built files
 
 2. **Environment Setup**
+
    - Create `.env` file:
+
    ```env
    DB_SERVER=10.10.0.1
    DB_USER=sa
@@ -36,8 +40,9 @@ This creates:
    ```
 
 3. **IIS Configuration**
+
    - Install **iisnode** if not already installed
-   - Create Application Pool: "GroupManager" 
+   - Create Application Pool: "GroupManager"
    - Set .NET CLR Version: **"No Managed Code"**
    - Point physical path to your application folder
    - Ensure `web.config` exists in root
@@ -53,6 +58,7 @@ This creates:
 IIS will execute: `dist/server/node-build.js`
 
 This file automatically:
+
 - Loads the Express server from `index.js`
 - Serves static files from `dist/spa/`
 - Handles API routes at `/api/*`
@@ -68,6 +74,7 @@ This file automatically:
 ### 🔍 Verification
 
 After deployment, test:
+
 - Main page: `http://your-server/`
 - API health: `http://your-server/api/ping`
 - Login page: `http://your-server/login`
