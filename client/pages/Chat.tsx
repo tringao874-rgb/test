@@ -56,7 +56,7 @@ export default function Chat() {
       id: '3',
       userId: '3',
       userName: 'Jane Smith',
-      message: 'Có ai thấy cập nhật dự án mới nhất chưa?',
+      message: 'Has anyone seen the latest project updates?',
       timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
       type: 'text'
     },
@@ -64,7 +64,7 @@ export default function Chat() {
       id: '4',
       userId: '1',
       userName: 'Admin User',
-      message: 'Có, tôi vừa đăng chúng trong phần Dự án. Hãy xem nhé!',
+      message: 'Yes, I just posted them in the Projects section. Check them out!',
       timestamp: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
       type: 'text'
     }
