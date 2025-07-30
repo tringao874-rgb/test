@@ -240,7 +240,7 @@ export default function Chat() {
           {/* Chat Type Tabs */}
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg">Trò chuyện</CardTitle>
+              <CardTitle className="text-lg">Chats</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <Button
@@ -249,7 +249,7 @@ export default function Chat() {
                 onClick={() => setActiveChat('group')}
               >
                 <Users className="h-4 w-4 mr-2" />
-                Nhóm ({onlineUsers.filter(u => u.status === 'online').length} trực tuyến)
+                Group ({onlineUsers.filter(u => u.status === 'online').length} online)
               </Button>
             </CardContent>
           </Card>
@@ -257,7 +257,7 @@ export default function Chat() {
           {/* Private Chats */}
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm">Tin nhắn riêng</CardTitle>
+              <CardTitle className="text-sm">Private Messages</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
               {Object.keys(privateChats).map(userId => {
