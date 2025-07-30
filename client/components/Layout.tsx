@@ -158,7 +158,7 @@ export function Layout({ children }: LayoutProps) {
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={logout} className="text-red-600 dark:text-red-400">
               <LogOut className="mr-2 h-4 w-4" />
-              <span>Đăng xuất</span>
+              <span>Log out</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
