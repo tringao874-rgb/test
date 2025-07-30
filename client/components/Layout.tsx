@@ -49,7 +49,7 @@ export function Layout({ children }: LayoutProps) {
   
   const navigation = [
     { name: 'Bảng điều khiển', href: '/', icon: Home, description: 'Tổng quan và thống kê' },
-    { name: 'Trò chuy��n', href: '/chat', icon: MessageSquare, description: 'Liên lạc nhóm' },
+    { name: 'Trò chuyện', href: '/chat', icon: MessageSquare, description: 'Liên lạc nhóm' },
     { name: 'Dự án', href: '/projects', icon: FolderOpen, description: 'Quản lý dự án' },
     { name: 'Nhiệm vụ', href: '/tasks', icon: CheckSquare, description: 'Giao việc' },
     ...(isManager ? [
@@ -158,7 +158,7 @@ export function Layout({ children }: LayoutProps) {
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={logout} className="text-red-600 dark:text-red-400">
               <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
+              <span>Đăng xuất</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
