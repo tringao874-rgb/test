@@ -194,26 +194,59 @@ export default function Chat() {
     return <Navigate to="/login" replace />;
   }
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
 
-    const message = {
-      id: Date.now().toString(),
-      userId: user.id,
-      userName: `${user.firstName} ${user.lastName}`,
-      message: newMessage,
-      timestamp: new Date().toISOString(),
-      type: "text",
-    };
+    try {
+      const token = localStorage.getItem('auth_token');
 
-    if (activeChat === "group") {
-      setMessages((prev) => [...prev, message]);
-    } else {
-      setPrivateChats((prev) => ({
-        ...prev,
-        [activeChat]: [...(prev[activeChat] || []), message],
-      }));
+      if (activeChat === "group") {
+        const response = await fetch('/api/chat/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            message: newMessage,
+            userId: user.id,
+            userName: `${user.firstName} ${user.lastName}`
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.data) {
+            setMessages(prev => [...prev, data.data]);
+          }
+        }
+      } else {
+        const response = await fetch(`/api/chat/private/${activeChat}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            message: newMessage,
+            senderId: user.id,
+            senderName: `${user.firstName} ${user.lastName}`
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.data) {
+            setPrivateChats(prev => ({
+              ...prev,
+              [activeChat]: [...(prev[activeChat] || []), data.data]
+            }));
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
     }
 
     setNewMessage("");
