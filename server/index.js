@@ -7,7 +7,7 @@ const { handleGetStats, handleGetRecentActivity, handleGetFullActivity } = requi
 const { handleGetProjects, handleCreateProject, handleUpdateProject } = require("./routes/projects");
 const { handleGetTasks, handleCreateTask, handleUpdateTask } = require("./routes/tasks");
 const { handleGetUsers, handleCreateUser, handleUpdateUser, handleDeleteUser } = require("./routes/users");
-const { handleGetMessages, handleSendMessage, handleGetPrivateMessages, handleSendPrivateMessage } = require("./routes/chat");
+const { handleGetMessages, handleSendMessage, handleGetPrivateMessages, handleSendPrivateMessage, handleGetUserList, handleGetUnreadCount } = require("./routes/chat");
 const { connectToDatabase } = require("./db/connection");
 
 function createServer() {
