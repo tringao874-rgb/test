@@ -14,7 +14,7 @@ function createServer() {
   const app = express();
 
   // Initialize database connection
-  initializeDatabase().catch(console.error);
+  connectToDatabase().catch(console.error);
 
   // Middleware
   app.use(cors());
