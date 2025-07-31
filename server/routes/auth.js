@@ -1,16 +1,20 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { getConnection, sql } = require('../db/connection');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { getConnection, sql } = require("../db/connection");
 
 // JWT Configuration - MUST be set in environment variables for security
 const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "24h";
 
 // Validate JWT_SECRET is configured
 if (!JWT_SECRET) {
-  console.error('❌ SECURITY ERROR: JWT_SECRET environment variable is not set!');
-  console.error('📋 Generate a secure secret using: node scripts/generate-jwt-secret.js');
-  console.error('🔧 Set JWT_SECRET in your .env file or environment variables');
+  console.error(
+    "❌ SECURITY ERROR: JWT_SECRET environment variable is not set!",
+  );
+  console.error(
+    "📋 Generate a secure secret using: node scripts/generate-jwt-secret.js",
+  );
+  console.error("🔧 Set JWT_SECRET in your .env file or environment variables");
   process.exit(1);
 }
 
@@ -43,18 +47,18 @@ const mockUsers = [
 // Mock password hashes (already hashed versions of admin123 and user123)
 const mockPasswords = {
   admin: "$2a$10$8K1p/a0dClpsuwNP3RBkBOaEVf1.dLz3.zPvK5wUy5rnEHYG5J8au", // admin123
-  user: "$2a$10$8K1p/a0dClpsuwNP3RBkBOaEVf1.dLz3.zPvK5wUy5rnEHYG5J8au"   // user123
+  user: "$2a$10$8K1p/a0dClpsuwNP3RBkBOaEVf1.dLz3.zPvK5wUy5rnEHYG5J8au", // user123
 };
 
 const generateToken = (user) => {
   return jwt.sign(
-    { 
-      userId: user.id, 
-      username: user.username, 
-      role: user.role 
+    {
+      userId: user.id,
+      username: user.username,
+      role: user.role,
     },
     JWT_SECRET,
-    { expiresIn: JWT_EXPIRES_IN }
+    { expiresIn: JWT_EXPIRES_IN },
   );
 };
 
@@ -68,59 +72,64 @@ const verifyToken = (token) => {
 
 const findUserByUsername = async (username) => {
   const pool = getConnection();
-  
+
   if (pool) {
     try {
-      const result = await pool.request()
-        .input('username', sql.NVarChar, username)
-        .query('SELECT * FROM Users WHERE Username = @username AND IsActive = 1');
-      
+      const result = await pool
+        .request()
+        .input("username", sql.NVarChar, username)
+        .query(
+          "SELECT * FROM Users WHERE Username = @username AND IsActive = 1",
+        );
+
       return result.recordset[0] || null;
     } catch (error) {
-      console.error('Database query error:', error);
+      console.error("Database query error:", error);
       // Fall back to mock data
     }
   }
-  
+
   // Use mock data when database is not available
-  return mockUsers.find(u => u.username === username) || null;
+  return mockUsers.find((u) => u.username === username) || null;
 };
 
 const findUserById = async (userId) => {
   const pool = getConnection();
-  
+
   if (pool) {
     try {
-      const result = await pool.request()
-        .input('userId', sql.NVarChar, userId)
-        .query('SELECT * FROM Users WHERE ID = @userId AND IsActive = 1');
-      
+      const result = await pool
+        .request()
+        .input("userId", sql.NVarChar, userId)
+        .query("SELECT * FROM Users WHERE ID = @userId AND IsActive = 1");
+
       return result.recordset[0] || null;
     } catch (error) {
-      console.error('Database query error:', error);
+      console.error("Database query error:", error);
       // Fall back to mock data
     }
   }
-  
+
   // Use mock data when database is not available
-  return mockUsers.find(u => u.id === userId) || null;
+  return mockUsers.find((u) => u.id === userId) || null;
 };
 
 const updateLastLogin = async (userId) => {
   const pool = getConnection();
-  
+
   if (pool) {
     try {
-      await pool.request()
-        .input('userId', sql.NVarChar, userId)
-        .input('lastLogin', sql.DateTime2, new Date())
-        .query('UPDATE Users SET LastLogin = @lastLogin WHERE ID = @userId');
+      await pool
+        .request()
+        .input("userId", sql.NVarChar, userId)
+        .input("lastLogin", sql.DateTime2, new Date())
+        .query("UPDATE Users SET LastLogin = @lastLogin WHERE ID = @userId");
     } catch (error) {
-      console.error('Failed to update last login:', error);
+      console.error("Failed to update last login:", error);
     }
   } else {
     // Update mock data
-    const user = mockUsers.find(u => u.id === userId);
+    const user = mockUsers.find((u) => u.id === userId);
     if (user) {
       user.lastLogin = new Date().toISOString();
     }
@@ -129,7 +138,7 @@ const updateLastLogin = async (userId) => {
 
 const verifyPassword = async (password, user) => {
   const pool = getConnection();
-  
+
   if (pool && user.PasswordHash) {
     // Compare with database password hash
     return await bcrypt.compare(password, user.PasswordHash);
@@ -179,7 +188,7 @@ const handleLogin = async (req, res) => {
     const token = generateToken({
       id: user.id || user.ID,
       username: user.username || user.Username,
-      role: user.role || user.Role
+      role: user.role || user.Role,
     });
 
     // Return user data (excluding password)
@@ -192,7 +201,7 @@ const handleLogin = async (req, res) => {
       role: user.role || user.Role,
       isActive: user.isActive ?? user.IsActive,
       createdAt: user.createdAt || user.CreatedAt,
-      lastLogin: new Date().toISOString()
+      lastLogin: new Date().toISOString(),
     };
 
     res.json({
@@ -211,7 +220,14 @@ const handleLogin = async (req, res) => {
 
 const handleRegister = async (req, res) => {
   try {
-    const { username, email, password, firstName, lastName, role = 'member' } = req.body;
+    const {
+      username,
+      email,
+      password,
+      firstName,
+      lastName,
+      role = "member",
+    } = req.body;
 
     if (!username || !email || !password || !firstName || !lastName) {
       return res.status(400).json({
@@ -234,24 +250,24 @@ const handleRegister = async (req, res) => {
     const userId = Date.now().toString();
 
     const pool = getConnection();
-    
+
     if (pool) {
       try {
         // Insert into database
-        await pool.request()
-          .input('id', sql.NVarChar, userId)
-          .input('username', sql.NVarChar, username)
-          .input('email', sql.NVarChar, email)
-          .input('passwordHash', sql.NVarChar, passwordHash)
-          .input('firstName', sql.NVarChar, firstName)
-          .input('lastName', sql.NVarChar, lastName)
-          .input('role', sql.NVarChar, role)
-          .query(`
+        await pool
+          .request()
+          .input("id", sql.NVarChar, userId)
+          .input("username", sql.NVarChar, username)
+          .input("email", sql.NVarChar, email)
+          .input("passwordHash", sql.NVarChar, passwordHash)
+          .input("firstName", sql.NVarChar, firstName)
+          .input("lastName", sql.NVarChar, lastName)
+          .input("role", sql.NVarChar, role).query(`
             INSERT INTO Users (ID, Username, Email, PasswordHash, FirstName, LastName, Role)
             VALUES (@id, @username, @email, @passwordHash, @firstName, @lastName, @role)
           `);
       } catch (error) {
-        console.error('Database insert error:', error);
+        console.error("Database insert error:", error);
         return res.status(500).json({
           success: false,
           message: "Failed to create user",
@@ -268,7 +284,7 @@ const handleRegister = async (req, res) => {
         role,
         isActive: true,
         createdAt: new Date().toISOString(),
-        lastLogin: null
+        lastLogin: null,
       };
       mockUsers.push(newUser);
       mockPasswords[username] = passwordHash;
@@ -285,8 +301,8 @@ const handleRegister = async (req, res) => {
         lastName,
         role,
         isActive: true,
-        createdAt: new Date().toISOString()
-      }
+        createdAt: new Date().toISOString(),
+      },
     });
   } catch (error) {
     console.error("Registration error:", error);
@@ -326,7 +342,7 @@ const handleAuthCheck = async (req, res) => {
       role: user.role || user.Role,
       isActive: user.isActive ?? user.IsActive,
       createdAt: user.createdAt || user.CreatedAt,
-      lastLogin: user.lastLogin || user.LastLogin
+      lastLogin: user.lastLogin || user.LastLogin,
     };
 
     res.json({
@@ -350,7 +366,7 @@ const authenticateToken = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: "Access token required"
+        message: "Access token required",
       });
     }
 
@@ -358,7 +374,7 @@ const authenticateToken = async (req, res, next) => {
     if (!decoded) {
       return res.status(401).json({
         success: false,
-        message: "Invalid or expired token"
+        message: "Invalid or expired token",
       });
     }
 
@@ -369,7 +385,7 @@ const authenticateToken = async (req, res, next) => {
     console.error("Token verification error:", error);
     res.status(401).json({
       success: false,
-      message: "Authentication failed"
+      message: "Authentication failed",
     });
   }
 };
@@ -380,5 +396,5 @@ module.exports = {
   handleAuthCheck,
   authenticateToken,
   findUserById,
-  findUserByUsername
+  findUserByUsername,
 };
