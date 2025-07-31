@@ -60,6 +60,8 @@ function createServer() {
   app.post("/api/chat/messages", handleSendMessage);
   app.get("/api/chat/private/:userId", handleGetPrivateMessages);
   app.post("/api/chat/private/:userId", handleSendPrivateMessage);
+  app.get("/api/chat/users", handleGetUserList);
+  app.get("/api/chat/unread", handleGetUnreadCount);
 
   return app;
 }
