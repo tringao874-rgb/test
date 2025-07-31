@@ -139,9 +139,31 @@ export default function Projects() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      setProjects(mockProjects);
+      fetchProjects();
     }
   }, [isAuthenticated]);
+
+  const fetchProjects = async () => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch('/api/projects', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.data) {
+          setProjects(data.data);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+      // Fallback to mock data
+      setProjects(mockProjects);
+    }
+  };
 
   if (isLoading) {
     return (
