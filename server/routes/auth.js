@@ -2,8 +2,17 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { getConnection, sql } = require('../db/connection');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+// JWT Configuration - MUST be set in environment variables for security
+const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
+
+// Validate JWT_SECRET is configured
+if (!JWT_SECRET) {
+  console.error('❌ SECURITY ERROR: JWT_SECRET environment variable is not set!');
+  console.error('📋 Generate a secure secret using: node scripts/generate-jwt-secret.js');
+  console.error('🔧 Set JWT_SECRET in your .env file or environment variables');
+  process.exit(1);
+}
 
 // Mock users for offline development (will be replaced by SQL Server queries when connected)
 const mockUsers = [
