@@ -31,6 +31,7 @@ function createServer() {
 
   // Authentication routes
   app.post("/api/auth/login", handleLogin);
+  app.post("/api/auth/register", handleRegister);
   app.get("/api/auth/check", handleAuthCheck);
 
   // Stats and activity routes
