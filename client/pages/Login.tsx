@@ -135,19 +135,31 @@ export default function Login() {
               </Button>
             </form>
 
-            <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-              <p>Demo accounts:</p>
-              <p>
-                <strong>Manager:</strong> admin / admin123
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Don't have an account?{" "}
+                <a
+                  href="/register"
+                  className="font-medium text-primary hover:underline"
+                >
+                  Sign up
+                </a>
               </p>
-              <p>
-                <strong>Member:</strong> user / user123
-              </p>
-              <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-md">
-                <p className="text-xs text-blue-700 dark:text-blue-300">
-                  <strong>Note:</strong> This system now supports proper user registration and password security.
-                  Demo accounts are available for testing purposes only.
+
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                <p>Demo accounts:</p>
+                <p>
+                  <strong>Manager:</strong> admin / admin123
                 </p>
+                <p>
+                  <strong>Member:</strong> user / user123
+                </p>
+                <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-md">
+                  <p className="text-xs text-blue-700 dark:text-blue-300">
+                    <strong>Note:</strong> This system now supports proper user registration and password security.
+                    Demo accounts are available for testing purposes only.
+                  </p>
+                </div>
               </div>
             </div>
           </CardContent>
