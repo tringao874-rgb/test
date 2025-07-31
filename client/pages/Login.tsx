@@ -43,7 +43,7 @@ export default function Login() {
     try {
       const result = await login(formData);
       if (!result.success) {
-        setError(result.message || "Đăng nhập thất bại");
+        setError(result.message || "Đăng nhập thất b���i");
       }
     } catch (err) {
       setError("Đã xảy ra lỗi không mong muốn");
@@ -78,7 +78,7 @@ export default function Login() {
         <Card>
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl text-center">
-              Chào mừng trở lại
+              Welcome Back
             </CardTitle>
             <CardDescription className="text-center">
               Nhập thông tin đ��ng nhập để truy cập hệ thống quản lý nhóm
