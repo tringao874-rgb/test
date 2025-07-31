@@ -2,13 +2,13 @@ require("dotenv/config");
 const express = require("express");
 const cors = require("cors");
 const { handleDemo } = require("./routes/demo");
-const { handleLogin, handleAuthCheck } = require("./routes/auth");
+const { handleLogin, handleRegister, handleAuthCheck, authenticateToken } = require("./routes/auth");
 const { handleGetStats, handleGetRecentActivity, handleGetFullActivity } = require("./routes/stats");
 const { handleGetProjects, handleCreateProject, handleUpdateProject } = require("./routes/projects");
 const { handleGetTasks, handleCreateTask, handleUpdateTask } = require("./routes/tasks");
 const { handleGetUsers, handleCreateUser, handleUpdateUser, handleDeleteUser } = require("./routes/users");
 const { handleGetMessages, handleSendMessage, handleGetPrivateMessages, handleSendPrivateMessage } = require("./routes/chat");
-const { initializeDatabase } = require("./db/config");
+const { connectToDatabase } = require("./db/connection");
 
 function createServer() {
   const app = express();
