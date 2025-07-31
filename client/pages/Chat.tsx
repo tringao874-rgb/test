@@ -113,11 +113,63 @@ export default function Chat() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      setMessages(mockMessages);
-      setOnlineUsers(mockOnlineUsers);
-      setPrivateChats(mockPrivateChats);
+      fetchMessages();
+      fetchUsers();
+      fetchPrivateChats();
     }
   }, [isAuthenticated]);
+
+  const fetchMessages = async () => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch('/api/chat/messages', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.data) {
+          setMessages(data.data);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+      setMessages(mockMessages);
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch('/api/users', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.data) {
+          const usersWithStatus = data.data.map(u => ({
+            ...u,
+            name: `${u.firstName} ${u.lastName}`,
+            status: u.isActive ? 'online' : 'offline'
+          }));
+          setOnlineUsers(usersWithStatus);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      setOnlineUsers(mockOnlineUsers);
+    }
+  };
+
+  const fetchPrivateChats = async () => {
+    // For now, use mock data - would need to fetch from multiple endpoints
+    setPrivateChats(mockPrivateChats);
+  };
 
   useEffect(() => {
     scrollToBottom();
