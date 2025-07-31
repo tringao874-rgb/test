@@ -71,7 +71,7 @@ export default function Login() {
             GroupManager
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Đăng nhập vào tài khoản của bạn
+            Sign in to your account
           </p>
         </div>
 
